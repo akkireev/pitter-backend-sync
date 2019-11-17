@@ -13,13 +13,9 @@ from django.conf import settings
 
 
 class GoogleSpeechToText:
-    @staticmethod
-    def convert_audio_codec_to_enum(codec_name: str):
-        if codec_name == "pcm_s16le":
-            return enums.RecognitionConfig.AudioEncoding.LINEAR16
-        # etc
-        else:
-            raise Exception()
+    GOOGLE_SPEECH_CODECS = {
+        "pcm_s16le": enums.RecognitionConfig.AudioEncoding.LINEAR16
+    }
 
     @staticmethod
     def recognize_speech(filename: str, language_code="ru-RU") -> List[str]:
@@ -37,7 +33,7 @@ class GoogleSpeechToText:
         try:
             audio_info = AudioHandler.get_mediainfo(file_path)
             config = types.RecognitionConfig(
-                encoding=GoogleSpeechToText.convert_audio_codec_to_enum(audio_info["codec_name"]),
+                encoding=GoogleSpeechToText.GOOGLE_SPEECH_CODECS[audio_info["codec_name"]],
                 audio_channel_count=int(audio_info["channels"]),
                 sample_rate_hertz=int(audio_info["sample_rate"]),
                 language_code=language_code)
