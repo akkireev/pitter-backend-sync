@@ -79,6 +79,10 @@ STATIC_URL = '/static/'
 
 STATIC_ROOT = '/static'
 
+MEDIA_ROOT = os.environ['MEDIA_ROOT']
+
+MEDIA_URL = '/media/'
+
 # DRF
 
 REST_FRAMEWORK = {
@@ -95,3 +99,7 @@ SWAGGER_SETTINGS = {
         'X-Device-Info': {'type': 'apiKey', 'name': 'X-Device-Info', 'in': 'header'},
     },
 }
+
+# Integrations
+
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"]  # required for google_speech_to_text
