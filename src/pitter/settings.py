@@ -79,6 +79,10 @@ STATIC_URL = '/static/'
 
 STATIC_ROOT = '/static'
 
+MEDIA_ROOT = os.environ['MEDIA_ROOT']
+
+MEDIA_URL = '/media/'
+
 # DRF
 
 REST_FRAMEWORK = {
