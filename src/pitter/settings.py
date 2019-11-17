@@ -95,3 +95,7 @@ SWAGGER_SETTINGS = {
         'X-Device-Info': {'type': 'apiKey', 'name': 'X-Device-Info', 'in': 'header'},
     },
 }
+
+# Integrations
+
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"]  # required for google_speech_to_text
