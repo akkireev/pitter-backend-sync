@@ -8,7 +8,6 @@ from rest_framework.views import exception_handler
 
 from src.pitter.exceptions import exceptions
 
-
 LOGGER = logging.getLogger(__name__)
 
 
@@ -24,7 +23,7 @@ class ErrorHandlerMiddleware:
         response = self.get_response(request)
         return response
 
-    def process_exception(self, exception) -> Optional[JsonResponse]:  # pylint: disable=no-self-use
+    def process_exception(self, request, exception) -> Optional[JsonResponse]:  # pylint: disable=no-self-use
         """
 
         :param exception:

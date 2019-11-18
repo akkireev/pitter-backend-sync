@@ -1,14 +1,12 @@
 import base64
-
-from pydub.utils import mediainfo
+import magic
 
 
 class AudioHandler:
     @staticmethod
-    def get_mediainfo(audio_path):
-        return mediainfo(audio_path)
+    def get_mediainfo(audio_bytes: bytes):
+        return magic.from_buffer(audio_bytes, mime=True)
 
     @staticmethod
-    def encode_audio_to_base64(audio):
-        audio_content = audio.read()
-        return base64.b64encode(audio_content)
+    def encode_audio_to_base64(audio_bytes: bytes):
+        return base64.b64encode(audio_bytes)

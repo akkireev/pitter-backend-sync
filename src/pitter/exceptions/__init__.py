@@ -65,3 +65,16 @@ class InternalRequestError(PitterException):
         self.title = title
         self.payload = payload
         super().__init__(detail, exception_code)
+
+
+class GoogleSpeechToTextError(PitterException):
+    default_detail = 'Сервис GoogleSpeechToText недоступен'
+
+    def __init__(self, message=None, title=None, payload=None, status_code=None):
+        detail = message if message else self.default_detail
+        exception_code = self.__class__.__name__
+        self.default_detail = message if message else self.default_detail
+        self.status_code = status_code if status_code else 500
+        self.title = title
+        self.payload = payload
+        super().__init__(detail, exception_code)
