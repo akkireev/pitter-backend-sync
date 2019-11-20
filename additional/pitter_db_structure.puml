@@ -20,7 +20,7 @@ created_at: Date
 }
 
 class Follower {
-user_id: String
+target_id: String
 follower_id: String
 created_at: Date
 }
