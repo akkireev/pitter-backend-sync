@@ -50,6 +50,17 @@ TEMPLATES = [
     }
 ]
 
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.getenv('PGDATABASE', 'postgres'),
+        'USER': os.getenv('PGUSER', 'postgres'),
+        'PASSWORD': os.getenv('PGPASSWORD', 'postgres'),
+        'HOST': os.getenv('PGHOST', 'localhost'),
+        'PORT': os.getenv('PGPORT', '5432')
+    }
+}
+
 WSGI_APPLICATION = 'pitter.wsgi.application'
 USE_X_FORWARDED_HOST = True
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
@@ -78,10 +89,6 @@ STATICFILES_DIRS = [
 STATIC_URL = '/static/'
 
 STATIC_ROOT = '/static'
-
-MEDIA_ROOT = os.environ['MEDIA_ROOT']
-
-MEDIA_URL = '/media/'
 
 # DRF
 

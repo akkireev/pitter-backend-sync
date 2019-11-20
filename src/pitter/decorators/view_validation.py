@@ -2,7 +2,7 @@ import functools
 
 from rest_framework.response import Response
 
-from src.pitter.exceptions import exceptions
+from pitter.exceptions import exceptions
 
 
 def request_post_serializer(serializer):

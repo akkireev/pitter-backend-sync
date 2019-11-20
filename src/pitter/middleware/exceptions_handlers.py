@@ -6,7 +6,7 @@ from django.conf import settings
 from django.http import JsonResponse
 from rest_framework.views import exception_handler
 
-from src.pitter.exceptions import exceptions
+from pitter.exceptions import exceptions
 
 LOGGER = logging.getLogger(__name__)
 

@@ -7,6 +7,6 @@ class TicketPostRequest(serializers.Serializer):
 
 
 class TicketPostResponse(serializers.Serializer):
-    id = serializers.CharField(required=True, label='Идентификатор заявки')
+    fakeId = serializers.CharField(required=True, label='Фэйковый идентификатор заявки')
     message = serializers.CharField(required=True, label='Сообщение')
     userComment = serializers.CharField(required=False, label='Комментарий пользователя', allow_blank=True)

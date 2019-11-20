@@ -4,10 +4,12 @@ from uuid import uuid4
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework.views import APIView
 
-from src.api_client.validation_serializers import TicketPostRequest
-from src.api_client.validation_serializers import TicketPostResponse
-from src.pitter import exceptions
-from src.pitter.decorators import request_post_serializer, response_dict_serializer
+from api_client.validation_serializers import TicketPostRequest
+from api_client.validation_serializers import TicketPostResponse
+from pitter import exceptions
+from pitter.decorators import request_post_serializer, response_dict_serializer
+
+from pitter.models.ticket import Ticket
 
 
 class TicketMobileView(APIView):
@@ -37,4 +39,10 @@ class TicketMobileView(APIView):
         user_comment: str = request.data['userComment']
         fake_id: str = str(uuid4())
 
-        return dict(id=fake_id, message=message, userComment=user_comment,)
+        result = Ticket.create_ticket(
+            fake_id=fake_id,
+            message=message,
+            user_comment=user_comment,
+        )
+
+        return result.to_dict()
