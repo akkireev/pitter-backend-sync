@@ -1,15 +1,15 @@
 from typing import List, Callable
 
-from .ticket_serializers import TicketPostRequest
-from .ticket_serializers import TicketPostResponse
-
 from .pitt_serializers import PittPostRequest
 from .pitt_serializers import PittPostResponse
 
-__all__: List[Callable] = [
-    'TicketPostRequest',
-    'TicketPostResponse',
+from .auth_serializers import RegistrationPostRequest
+from .auth_serializers import RegistrationPostResponse
 
+__all__: List[Callable] = [
     'PittPostRequest',
-    'PittPostResponse'
+    'PittPostResponse',
+
+    'RegistrationPostRequest',
+    'RegistrationPostResponse'
 ]
