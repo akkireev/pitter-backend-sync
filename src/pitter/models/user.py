@@ -89,6 +89,13 @@ class User(models.Model):
     # be passed to password_changed() after the model is saved.
     _password = None
 
+    @staticmethod
+    def register_new_user(login, password):
+        return User.objects.get_or_create(
+            login=login,
+            password=password
+        )
+
     def __str__(self):
         return self.get_login()
 
