@@ -3,6 +3,7 @@ from typing import List
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'cru)q9q-!=#ip!)(i=rawgbjdfxiyrm+znk05iz=5p*w7r9(yh'
+SECRET_PASSWORD_PEPPER = os.environ.get('SECRET_PASSWORD_PEPPER', 'a-z2e3M-83*3cQ*mlZZXU')
 
 DEBUG: bool = bool(int(os.getenv('DEBUG', 1)))  # pylint: disable=invalid-envvar-default
 
@@ -109,4 +110,5 @@ SWAGGER_SETTINGS = {
 
 # Integrations
 
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"]  # required for google_speech_to_text
+# KLUDGE comment for now
+# os.environ["GOOGLE_APPLICATION_CREDENTIALS"]  # required for google_speech_to_text

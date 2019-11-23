@@ -11,7 +11,7 @@ class ExceptionResponse(serializers.Serializer):
 
 
 class PitterException(APIException):
-    default_detail = 'Something went wrong.'
+    default_detail = 'Что-то пошло не так'
     default_code = 'ServerError'
 
     def __init__(self, message, error_code, status_code=500):
@@ -29,7 +29,7 @@ class PitterException(APIException):
 
 
 class ValidationError(PitterException):
-    default_detail = 'Validation error'
+    default_detail = 'Ошибка валидации'
 
     def __init__(self, message=None, title=None, payload=None, status_code=None):
         detail = message if message else self.default_detail
@@ -38,4 +38,43 @@ class ValidationError(PitterException):
         self.status_code = status_code if status_code else 422
         self.title = title
         self.payload = payload
+        super().__init__(detail, exception_code, self.status_code)
+
+
+class InternalRequestError(PitterException):
+    default_detail = 'Некоторые внутренние запросы вернули ошибку'
+
+    def __init__(self, message=None, title=None, payload=None, status_code=None):
+        detail = message if message else self.default_detail
+        exception_code = self.__class__.__name__
+        self.default_detail = message if message else self.default_detail
+        self.status_code = status_code if status_code else 401
+        self.title = title
+        self.payload = payload
         super().__init__(detail, exception_code)
+
+
+class GoogleSpeechToTextError(PitterException):
+    default_detail = 'Сервис GoogleSpeechToText недоступен'
+
+    def __init__(self, message=None, title=None, payload=None, status_code=None):
+        detail = message if message else self.default_detail
+        exception_code = self.__class__.__name__
+        self.default_detail = message if message else self.default_detail
+        self.status_code = status_code if status_code else 500
+        self.title = title
+        self.payload = payload
+        super().__init__(detail, exception_code)
+
+
+class AlreadyExistsError(PitterException):
+    default_detail = 'Данные уже существуют'
+
+    def __init__(self, message=None, title=None, payload=None, status_code=None):
+        detail = message if message else self.default_detail
+        exception_code = self.__class__.__name__
+        self.default_detail = message if message else self.default_detail
+        self.status_code = status_code if status_code else 401
+        self.title = title
+        self.payload = payload
+        super().__init__(detail, exception_code, self.status_code)

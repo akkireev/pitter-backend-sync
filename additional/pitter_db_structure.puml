@@ -1,0 +1,31 @@
+@startuml
+
+class User {
+<b>id</b>: String
+login: String
+password: String
+profile_name: String
+email: String
+email_notifications_enabled: Boolean
+created_at: Date
+last_action_at: Date
+}
+
+class Pitt {
+<b>id</b>: String
+user_id: String
+speech_audio_file_path: String
+speech_transcription: Text
+created_at: Date
+}
+
+class Follower {
+target_id: String
+follower_id: String
+created_at: Date
+}
+
+User "1" -- "*" Pitt
+User "1" -- "*" Follower
+
+@enduml
