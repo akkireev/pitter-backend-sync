@@ -109,6 +109,5 @@ SWAGGER_SETTINGS = {
 }
 
 # Integrations
-
-# KLUDGE comment for now
-# os.environ["GOOGLE_APPLICATION_CREDENTIALS"]  # required for google_speech_to_text
+SPEECH_TO_TEXT_INTEGRATION_URI = os.environ.get("SPEECH_TO_TEXT_INTEGRATION_URI",
+                                                "http://localhost:8118/api/pitter/v1/speech-recognition")

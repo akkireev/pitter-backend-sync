@@ -4,9 +4,5 @@ drf-yasg==1.17.0
 PyYAML==5.1.2
 psycopg2-binary==2.8.4
 
-# homework-1
-google-cloud-speech==1.2.0
-python-magic==0.4.15
-
 # homework-2
 bcrypt==3.1.7

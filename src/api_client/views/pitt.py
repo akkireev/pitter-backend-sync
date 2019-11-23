@@ -4,16 +4,14 @@ from drf_yasg.utils import swagger_auto_schema
 from rest_framework.parsers import MultiPartParser
 from rest_framework.views import APIView
 
-from pitter.integrations.google_speech_to_text import GoogleSpeechToText
 from api_client.validation_serializers import PittPostRequest
 from api_client.validation_serializers import PittPostResponse
 from pitter import exceptions
 from pitter.decorators import request_post_serializer, response_dict_serializer
+from pitter.integrations import GoogleSpeechToText
 
 
 class PittMobileView(APIView):
-    parser_classes = [MultiPartParser]
-
     @classmethod
     @request_post_serializer(PittPostRequest)
     @response_dict_serializer(PittPostResponse)
@@ -36,6 +34,9 @@ class PittMobileView(APIView):
         :param request:
         :return:
         """
-        recognized_text: str = GoogleSpeechToText.recognize_speech(request.data['speech_audio'].read())
+        transcription: str = GoogleSpeechToText.recognize_speech(
+            storage_file_path=request.data['storage_file_path'],
+            language_code=request.data['language_code'],
+        )
 
-        return dict(recognized_text=recognized_text,)
+        return dict(transcription=transcription,)
