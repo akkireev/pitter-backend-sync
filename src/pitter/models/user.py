@@ -1,4 +1,4 @@
-from django.db import models, IntegrityError
+from django.db import models
 
 from pitter.models.base import default_uuid_id
 from pitter.utils.hashers import PasswordHash

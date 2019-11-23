@@ -1,15 +1,8 @@
-import hashlib
 import bcrypt
 
 from django.conf import settings
 from django.utils.crypto import constant_time_compare
 
-
-# TODO:
-#  password = user_salt + "." + hash (user_salt + password + config_salt)
-#  or
-#  password = hash (user_salt + password + config_salt)
-#  user_salt = user_salt
 
 class BCryptSHA256PasswordHasher:
     rounds = 12
