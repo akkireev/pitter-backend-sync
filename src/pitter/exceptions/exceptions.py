@@ -74,7 +74,7 @@ class AlreadyExistsError(PitterException):
         detail = message if message else self.default_detail
         exception_code = self.__class__.__name__
         self.default_detail = message if message else self.default_detail
-        self.status_code = status_code if status_code else 422
+        self.status_code = status_code if status_code else 401
         self.title = title
         self.payload = payload
         super().__init__(detail, exception_code, self.status_code)

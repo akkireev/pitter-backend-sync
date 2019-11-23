@@ -1,10 +1,11 @@
 from typing import Sequence
 
 from .pitt import PittMobileView
-from .auth import RegistrationMobileView
+from .users import UsersMobileView
+from .user import UserMobileView
 
 __all__: Sequence[str] = [
     'PittMobileView',
 
-    'RegistrationMobileView',
+    'UsersMobileView',
 ]
