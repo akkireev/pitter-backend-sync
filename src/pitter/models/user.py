@@ -21,6 +21,10 @@ class User(models.Model):
     joined_at = models.DateTimeField(auto_now=True)
     last_action_at = models.DateTimeField(auto_now=True)
 
+    @staticmethod
+    def get(**kwargs):
+        return User.objects.get(**kwargs)
+
     @classmethod
     def normalize_email(cls, email):
         """

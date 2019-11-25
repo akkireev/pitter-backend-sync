@@ -1,9 +1,21 @@
 import os
 from typing import List
 
+
+def get_key(filename):
+    with open(filename, 'r') as f:
+        return f.read()
+
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-SECRET_KEY = 'cru)q9q-!=#ip!)(i=rawgbjdfxiyrm+znk05iz=5p*w7r9(yh'
+
+SECRET_KEY = os.environ.get('SECRET_KEY', 'cru)q9q-!=#ip!)(i=rawgbjdfxiyrm+znk05iz=5p*w7r9(yh')
 SECRET_PASSWORD_PEPPER = os.environ.get('SECRET_PASSWORD_PEPPER', 'a-z2e3M-83*3cQ*mlZZXU')
+
+PUBLIC_KEY_PATH = os.environ.get('PUBLIC_KEY_PATH', '../additional/rsa.public')
+PRIVATE_KEY_PATH = os.environ.get('PRIVATE_KEY_PATH', '../additional/rsa.private')
+JWT_PUBLIC_KEY = get_key(PUBLIC_KEY_PATH)
+JWT_PRIVATE_KEY = get_key(PRIVATE_KEY_PATH)
 
 DEBUG: bool = bool(int(os.getenv('DEBUG', 1)))  # pylint: disable=invalid-envvar-default
 
@@ -30,6 +42,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'pitter.middleware.AuthenticationMiddleware',
     'pitter.middleware.ErrorHandlerMiddleware',
 ]
 
