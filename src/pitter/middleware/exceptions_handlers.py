@@ -42,6 +42,21 @@ class ErrorHandlerMiddleware:
             )
 
 
+def custom_middleware_exception(exception):
+    if settings.DEBUG:
+        LOGGER.exception(exception)
+    return JsonResponse(
+        dict(
+            code=exception.default_code,
+            title=exception.default_detail,
+            message=exception.default_detail,
+            payload=exception.payload,
+            debug=str(exception) if settings.DEBUG else None,
+        ),
+        status=exception.status_code,
+    )
+
+
 def custom_exception_handler(exception, context):
     """
 

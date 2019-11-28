@@ -1,4 +1,4 @@
-from django.db import models, IntegrityError
+from django.db import models
 
 from pitter.models.base import default_uuid_id
 from pitter.utils.hashers import PasswordHash
@@ -21,6 +21,10 @@ class User(models.Model):
     joined_at = models.DateTimeField(auto_now=True)
     last_action_at = models.DateTimeField(auto_now=True)
 
+    @staticmethod
+    def get(**kwargs):
+        return User.objects.get(**kwargs)
+
     @classmethod
     def normalize_email(cls, email):
         """
@@ -37,17 +41,12 @@ class User(models.Model):
 
     @classmethod
     def register_new_user(cls, login, password):
-        try:
-            User.objects.get(login=login)
-            return None, False
-        except User.DoesNotExist:
-            try:
-                user = User(login=login)
-                user.set_password(password)
-                user.save()
-                return user, True
-            except Exception:
-                raise
+        user, created = User.objects.get_or_create(login=login)
+        if created:
+            user.set_password(password)
+            user.save()
+
+        return user, created
 
     def set_password(self, raw_password):
         self.password = PasswordHash.make_password(raw_password)
