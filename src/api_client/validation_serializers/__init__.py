@@ -8,6 +8,8 @@ from .pitt_serializers import PittPostResponse
 from .users_serializers import UsersPostRequest
 from .users_serializers import UsersPostResponse
 
+from .auth import LoginPostResponse
+from .auth import LoginPostRequest
 
 APISPEC_DEFAULT_PARAMS = [
     Parameter(
@@ -24,4 +26,6 @@ __all__: List[Callable] = [
     'UsersPostRequest',
     'UsersPostResponse',
     'APISPEC_DEFAULT_PARAMS',
+    'LoginPostResponse',
+    'LoginPostRequest',
 ]
