@@ -16,3 +16,7 @@ RUN pip install --no-cache-dir -U -r /config/internal-requirements.txt && rm /co
 RUN pip install --no-cache-dir -U -r /config/requirements.txt && rm /config/requirements.txt
 
 ADD src ${APP_ROOT}/src/
+
+RUN mkdir /credentials
+ADD additional/rsa.private /credentials/
+ADD additional/rsa.public /credentials/
