@@ -6,11 +6,11 @@ from drf_yasg.utils import swagger_auto_schema
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from api_client.validation_serializers import APISPEC_DEFAULT_PARAMS, LoginPostRequest, LoginPostResponse
+from api_client.validation_serializers import APISPEC_DEFAULT_PARAMS, LoginPostRequest, LoginPostResponse, \
+    LogoutPostRequest, LogoutPostResponse
 from pitter import exceptions
 from pitter.decorators import request_post_serializer, response_dict_serializer, access_token_required
 from pitter.exceptions import InvalidCredentialsError
-from pitter.integrations import GoogleSpeechToText
 from pitter.models import User
 from pitter.utils.auth import JwtTokenAuth
 from pitter.utils.redis_storage import RedisStorage
@@ -21,7 +21,7 @@ class LoginMobileView(APIView):
     @request_post_serializer(LoginPostRequest)
     @response_dict_serializer(LoginPostResponse)
     @swagger_auto_schema(
-        tags=['Pitter: mobile'],
+        tags=['Pitter: auth'],
         request_body=LoginPostRequest,
         responses={
             200: LoginPostResponse,
@@ -74,12 +74,14 @@ class LoginMobileView(APIView):
 class LogoutMobileView(APIView):
     @classmethod
     @access_token_required
+    @request_post_serializer(LogoutPostRequest)
+    @response_dict_serializer(LogoutPostResponse)
     @swagger_auto_schema(
-        tags=['Pitter: mobile'],
-        request_body=None,
+        tags=['Pitter: auth'],
+        request_body=LogoutPostRequest,
         manual_parameters=APISPEC_DEFAULT_PARAMS,
         responses={
-            204: None,
+            204: LogoutPostResponse,
             401: exceptions.ExceptionResponse,
             404: exceptions.ExceptionResponse,
             415: exceptions.ExceptionResponse,

@@ -10,6 +10,8 @@ from .users_serializers import UsersPostResponse
 
 from .auth import LoginPostResponse
 from .auth import LoginPostRequest
+from .auth import LogoutPostRequest
+from .auth import LogoutPostResponse
 
 APISPEC_DEFAULT_PARAMS = [
     Parameter(
@@ -28,4 +30,6 @@ __all__: List[Callable] = [
     'APISPEC_DEFAULT_PARAMS',
     'LoginPostResponse',
     'LoginPostRequest',
+    'LogoutPostRequest',
+    'LogoutPostResponse',
 ]

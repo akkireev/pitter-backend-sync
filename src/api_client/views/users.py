@@ -16,7 +16,7 @@ class UsersMobileView(APIView):
     @request_post_serializer(UsersPostRequest)
     @response_dict_serializer(UsersPostResponse)
     @swagger_auto_schema(
-        tags=['Pitter: mobile'],
+        tags=['Pitter: auth'],
         request_body=UsersPostRequest,
         responses={
             201: UsersPostResponse,
