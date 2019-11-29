@@ -3,10 +3,9 @@ from typing import Dict
 
 from django.conf import settings
 from drf_yasg.utils import swagger_auto_schema
-from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from api_client.validation_serializers import APISPEC_DEFAULT_PARAMS, LoginPostRequest, LoginPostResponse, \
+from api_client.validation_serializers import AUTH_PARAM, LoginPostRequest, LoginPostResponse, \
     LogoutPostRequest, LogoutPostResponse
 from pitter import exceptions
 from pitter.decorators import request_post_serializer, response_dict_serializer, access_token_required
@@ -79,7 +78,7 @@ class LogoutMobileView(APIView):
     @swagger_auto_schema(
         tags=['Pitter: auth'],
         request_body=LogoutPostRequest,
-        manual_parameters=APISPEC_DEFAULT_PARAMS,
+        manual_parameters=[AUTH_PARAM],
         responses={
             204: LogoutPostResponse,
             401: exceptions.ExceptionResponse,
@@ -90,11 +89,12 @@ class LogoutMobileView(APIView):
         operation_summary='Logout из сервиса',
         operation_description='Logout из сервиса Pitter',
     )
-    def post(cls, request) -> Response:
+    def post(cls, request) -> Dict:
         """
         :param request:
         :return:
         """
         RedisStorage.delete_token(request.api_user.id)
 
-        return Response(status=204)
+        return dict()
+

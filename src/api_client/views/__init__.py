@@ -6,9 +6,11 @@ from .user import UserMobileView
 from .auth import LoginMobileView
 from .auth import LogoutMobileView
 
+
 __all__: Sequence[str] = [
     'PittMobileView',
     'LoginMobileView',
     'LogoutMobileView',
     'UsersMobileView',
+    'UserMobileView',
 ]

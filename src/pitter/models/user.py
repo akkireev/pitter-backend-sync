@@ -48,6 +48,12 @@ class User(models.Model):
 
         return user, created
 
+    def patch(self, **kwargs):
+        for field, value in kwargs.items():
+            setattr(self, field, value)
+        self.save(update_fields=kwargs.keys())
+        return self
+
     def set_password(self, raw_password):
         self.password = PasswordHash.make_password(raw_password)
 
