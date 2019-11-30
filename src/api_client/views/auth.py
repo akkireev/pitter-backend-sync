@@ -58,11 +58,7 @@ class LoginMobileView(APIView):
 
     @classmethod
     def create_token(cls, user: User) -> str:
-        timedelta = datetime.timedelta(
-            days=settings.JWT_EXPIRATION_DAYS,
-            hours=settings.JWT_EXPIRATION_HOURS,
-            minutes=settings.JWT_EXPIRATION_MINUTES,
-        )
+        timedelta = datetime.timedelta(seconds=settings.JWT_EXPIRATION_SECONDS)
         token = JwtTokenAuth.create_user_token(user, timedelta)
         RedisStorage.delete_token(user.id)
         RedisStorage.set_token(user.id, token, timedelta)
@@ -97,4 +93,3 @@ class LogoutMobileView(APIView):
         RedisStorage.delete_token(request.api_user.id)
 
         return dict()
-

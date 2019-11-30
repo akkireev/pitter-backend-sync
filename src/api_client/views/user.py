@@ -4,10 +4,10 @@ from drf_yasg.utils import swagger_auto_schema
 from rest_framework.views import APIView
 
 from api_client.validation_serializers import UserPatchRequest, UserPatchResponse, UserDeleteResponse, \
-    UserDeleteRequest, AUTH_PARAM, USER_URL_PARAM
+    UserDeleteRequest, AUTH_PARAM, USER_URL_PATH_PARAM
 from pitter import exceptions
 from pitter.decorators import request_post_serializer, response_dict_serializer, access_token_required
-from pitter.exceptions import ForbiddenError
+from pitter.exceptions import ForbiddenError, PitterException
 
 
 class UserMobileView(APIView):
@@ -18,7 +18,7 @@ class UserMobileView(APIView):
     @swagger_auto_schema(
         tags=['Pitter: mobile'],
         request_body=UserPatchRequest,
-        manual_parameters=[AUTH_PARAM, USER_URL_PARAM],
+        manual_parameters=[AUTH_PARAM, USER_URL_PATH_PARAM],
         responses={
             200: UserPatchResponse,
             400: exceptions.ExceptionResponse,
@@ -66,7 +66,7 @@ class UserMobileView(APIView):
     @swagger_auto_schema(
         tags=['Pitter: mobile'],
         request_body=UserDeleteRequest,
-        manual_parameters=[AUTH_PARAM],
+        manual_parameters=[AUTH_PARAM, USER_URL_PATH_PARAM],
         responses={
             204: UserDeleteResponse,
             400: exceptions.ExceptionResponse,
@@ -76,6 +76,13 @@ class UserMobileView(APIView):
         operation_summary='Удаление учетной записи',
         operation_description='Удаление учетной записи в сервисе Pitter',
     )
-    def delete(cls, request, user_id) -> None:
+    def delete(cls, request, user_id) -> Dict:
         if user_id != request.api_user.id:
             raise ForbiddenError()
+
+        try:
+            request.api_user.delete()
+        except Exception as exc:
+            raise PitterException('Что-то пошло не так', 'ServerError') from exc
+
+        return dict()
