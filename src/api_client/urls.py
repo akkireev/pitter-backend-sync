@@ -6,6 +6,7 @@ urlpatterns: list = [
     path('pitt', views.PittMobileView.as_view(), name='mobile_pitt'),
     path('users', views.UsersMobileView.as_view(), name='mobile_users'),
     path('users/<str:user_id>', views.UserMobileView.as_view(), name='mobile_user'),
+    path('users/<str:user_id>/followers', views.FollowersMobileView.as_view(), name='mobile_folowers'),
     path('account/login', views.LoginMobileView.as_view(), name='mobile_login'),
     path('account/logout', views.LogoutMobileView.as_view(), name='mobile_logout'),
 ]
