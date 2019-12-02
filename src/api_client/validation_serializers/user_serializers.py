@@ -24,3 +24,11 @@ class UserDeleteRequest(serializers.Serializer):
 
 class UserDeleteResponse(serializers.Serializer):
     pass
+
+
+class UserGetResponse(serializers.Serializer):
+    id = serializers.CharField(required=True, max_length=256)
+    login = serializers.CharField(required=True, max_length=64)
+    profile_name = serializers.CharField(required=True, allow_blank=True, max_length=64, label='Имя профиля')
+    followers_num = serializers.IntegerField(required=True, label='Кол-во фоловеров')
+    following_num = serializers.IntegerField(required=True, label='Кол-во людей, на которых подписан')

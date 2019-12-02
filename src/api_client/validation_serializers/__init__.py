@@ -20,6 +20,7 @@ from .user_serializers import UserPatchRequest
 from .user_serializers import UserPatchResponse
 from .user_serializers import UserDeleteRequest
 from .user_serializers import UserDeleteResponse
+from .user_serializers import UserGetResponse
 
 from .followers_serializers import FollowersPostRequest
 from .followers_serializers import FollowersPostResponse
@@ -33,6 +34,9 @@ from .pitts_serializers import PittsGetResponse
 
 from .pitt_serializers import PittDeleteRequest
 from .pitt_serializers import PittDeleteResponse
+
+from .feeds_serializer import FeedsGetRequest
+from .feeds_serializer import FeedsGetResponse
 
 __all__: List[Callable] = [
     # swagger
@@ -57,6 +61,7 @@ __all__: List[Callable] = [
     'UserPatchResponse',
     'UserDeleteRequest',
     'UserDeleteResponse',
+    'UserGetResponse',
     'UsersGetRequest',
     'UsersGetResponse',
     'FollowersPostRequest',
@@ -66,4 +71,6 @@ __all__: List[Callable] = [
     'PittsPostResponse',
     'PittsPostRequest',
     'PittsGetResponse',
+    'FeedsGetRequest',
+    'FeedsGetResponse',
 ]

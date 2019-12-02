@@ -4,13 +4,66 @@ from drf_yasg.utils import swagger_auto_schema
 from rest_framework.views import APIView
 
 from api_client.validation_serializers import UserPatchRequest, UserPatchResponse, UserDeleteResponse, \
-    UserDeleteRequest, AUTH_PARAM, USER_URL_PATH_PARAM
+    UserDeleteRequest, AUTH_PARAM, USER_URL_PATH_PARAM, UserGetResponse
 from pitter import exceptions
 from pitter.decorators import request_post_serializer, response_dict_serializer, access_token_required
 from pitter.exceptions import ForbiddenError, PitterException
+from pitter.models import User, Follower
 
 
 class UserMobileView(APIView):
+    @classmethod
+    @response_dict_serializer(UserGetResponse)
+    @swagger_auto_schema(
+        tags=['Pitter: mobile'],
+        manual_parameters=[USER_URL_PATH_PARAM],
+        responses={
+            200: UserGetResponse,
+            400: exceptions.ExceptionResponse,
+            401: exceptions.ExceptionResponse,
+            500: exceptions.ExceptionResponse,
+        },
+        operation_summary='Информация о пользователе',
+        operation_description='Информация о пользователе в сервисе Pitter',
+    )
+    def get(cls, request, user_id) -> Dict:
+        user = User.get(id=user_id)
+        followers_num = Follower.get_followers_num(user)
+        following_num = Follower.get_following_num(user)
+
+        response_dict = user.to_dict()
+        response_dict['followers_num'] = followers_num
+        response_dict['following_num'] = following_num
+        return response_dict
+
+    @classmethod
+    @access_token_required
+    @request_post_serializer(UserDeleteRequest)
+    @response_dict_serializer(UserDeleteResponse)
+    @swagger_auto_schema(
+        tags=['Pitter: mobile'],
+        request_body=UserDeleteRequest,
+        manual_parameters=[AUTH_PARAM, USER_URL_PATH_PARAM],
+        responses={
+            204: UserDeleteResponse,
+            400: exceptions.ExceptionResponse,
+            401: exceptions.ExceptionResponse,
+            500: exceptions.ExceptionResponse,
+        },
+        operation_summary='Удаление учетной записи',
+        operation_description='Удаление учетной записи в сервисе Pitter',
+    )
+    def delete(cls, request, user_id) -> Dict:
+        if user_id != request.api_user.id:
+            raise ForbiddenError()
+
+        try:
+            request.api_user.delete()
+        except Exception as exc:
+            raise PitterException('Что-то пошло не так', 'ServerError') from exc
+
+        return dict()
+
     @classmethod
     @access_token_required
     @request_post_serializer(UserPatchRequest)
