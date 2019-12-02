@@ -31,7 +31,11 @@ class AuthenticationMiddleware(MiddlewareMixin):
         if not self.check_token_in_whitelist(user_id, token):
             return custom_middleware_exception(AccessTokenInvalid())
 
-        user = User.get(id=user_id)
+        try:
+            user = User.get(id=user_id)
+        except User.DoesNotExist:
+            return custom_middleware_exception(AccessTokenInvalid())
+
         setattr(request, 'api_user', user)
 
     def check_token_in_whitelist(self, user_id, token):

@@ -16,9 +16,7 @@ PUBLIC_KEY_PATH = os.environ.get('PUBLIC_KEY_PATH', '../additional/rsa.public')
 PRIVATE_KEY_PATH = os.environ.get('PRIVATE_KEY_PATH', '../additional/rsa.private')
 JWT_PUBLIC_KEY = get_key(PUBLIC_KEY_PATH)
 JWT_PRIVATE_KEY = get_key(PRIVATE_KEY_PATH)
-JWT_EXPIRATION_DAYS = os.environ.get('JWT_EXPIRATION_DAYS', 3)
-JWT_EXPIRATION_HOURS = os.environ.get('JWT_EXPIRATION_HOURS', 3)
-JWT_EXPIRATION_MINUTES = os.environ.get('JWT_EXPIRATION_MINUTES', 3)
+JWT_EXPIRATION_SECONDS = os.environ.get('JWT_EXPIRATION_SECONDS', 60 * 60 * 24 * 3)
 
 REDIS_HOST = os.environ.get('REDIS_HOST', 'localhost')
 REDIS_PORT = os.environ.get('REDIS_PORT', '6379')
@@ -117,6 +115,7 @@ STATIC_ROOT = '/static'
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': ['rest_framework.permissions.AllowAny'],
     'EXCEPTION_HANDLER': 'pitter.middleware.custom_exception_handler',
+    'PAGE_SIZE': os.environ.get('PAGE_SIZE', 1),
 }
 
 # Swagger

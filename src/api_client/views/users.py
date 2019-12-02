@@ -3,12 +3,14 @@ from typing import Dict
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework.views import APIView
 
-from api_client.validation_serializers import UsersPostRequest, UsersPostResponse
+from api_client.validation_serializers import UsersPostRequest, UsersPostResponse, UsersGetResponse, UsersGetRequest, \
+    URL_CURSOR_PARAM, USERS_URL_FILTER_PARAM
 
 from pitter import exceptions
 from pitter.decorators import request_post_serializer, response_dict_serializer
-from pitter.exceptions import AlreadyExistsError
+from pitter.exceptions import AlreadyExistsError, ValidationError
 from pitter.models import User
+from pitter.utils.cursor_pagination import CursorPagination
 
 
 class UsersMobileView(APIView):
@@ -16,7 +18,7 @@ class UsersMobileView(APIView):
     @request_post_serializer(UsersPostRequest)
     @response_dict_serializer(UsersPostResponse)
     @swagger_auto_schema(
-        tags=['Pitter: mobile'],
+        tags=['Pitter: auth'],
         request_body=UsersPostRequest,
         responses={
             201: UsersPostResponse,
@@ -54,3 +56,40 @@ class UsersMobileView(APIView):
                 status_code=409,
                 payload={'field_name': 'login'}
             )
+
+    @classmethod
+    @response_dict_serializer(UsersGetResponse)
+    @swagger_auto_schema(
+        tags=['Pitter: mobile'],
+        manual_parameters=[URL_CURSOR_PARAM, USERS_URL_FILTER_PARAM],
+        responses={
+            200: UsersGetResponse,
+            400: exceptions.ExceptionResponse,
+            401: exceptions.ExceptionResponse,
+            409: exceptions.ExceptionResponse,
+            500: exceptions.ExceptionResponse,
+        },
+        operation_summary='Получение списка пользователей',
+        operation_description='Получение списка пользователей в сервисе Pitter',
+    )
+    def get(cls, request) -> Dict:
+        """
+        Получения списка пользователей
+        :param request:
+        :return:
+        """
+        login_filter = request.query_params.get('login', None)
+
+        users = User.objects
+        if login_filter:
+            users = users.filter(login__contains=login_filter)
+        users = users.all()
+
+        paginator = CursorPagination()
+        try:
+            current_page_data = paginator.paginate_queryset(users, request, ['-joined_at'])
+        except ValueError:
+            raise ValidationError()
+
+        current_page_users = [user.to_dict() for user in current_page_data]
+        return paginator.get_paginated_dict(current_page_users)

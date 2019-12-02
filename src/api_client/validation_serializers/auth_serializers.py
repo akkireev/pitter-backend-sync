@@ -8,3 +8,11 @@ class LoginPostRequest(serializers.Serializer):
 
 class LoginPostResponse(serializers.Serializer):
     token = serializers.CharField(required=True, label='JWT токен')
+
+
+class LogoutPostRequest(serializers.Serializer):
+    pass
+
+
+class LogoutPostResponse(serializers.Serializer):
+    pass

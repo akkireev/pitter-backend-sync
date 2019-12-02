@@ -21,6 +21,15 @@ class User(models.Model):
     joined_at = models.DateTimeField(auto_now=True)
     last_action_at = models.DateTimeField(auto_now=True)
 
+    def to_dict(self):
+        return dict(
+            id=self.id,
+            login=self.login,
+            profile_name=self.profile_name,
+            joined_at=self.joined_at,
+            last_action_at=self.last_action_at,
+        )
+
     @staticmethod
     def get(**kwargs):
         return User.objects.get(**kwargs)
@@ -47,6 +56,12 @@ class User(models.Model):
             user.save()
 
         return user, created
+
+    def patch(self, **kwargs):
+        for field, value in kwargs.items():
+            setattr(self, field, value)
+        self.save(update_fields=kwargs.keys())
+        return self
 
     def set_password(self, raw_password):
         self.password = PasswordHash.make_password(raw_password)

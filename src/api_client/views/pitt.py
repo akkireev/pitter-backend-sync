@@ -1,10 +1,9 @@
 from typing import Dict
 
-from drf_yasg.openapi import Parameter
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework.views import APIView
 
-from api_client.validation_serializers import PittPostRequest, APISPEC_DEFAULT_PARAMS
+from api_client.validation_serializers import PittPostRequest, AUTH_PARAM
 from api_client.validation_serializers import PittPostResponse
 from pitter import exceptions
 from pitter.decorators import request_post_serializer, response_dict_serializer, access_token_required
@@ -19,7 +18,7 @@ class PittMobileView(APIView):
     @swagger_auto_schema(
         tags=['Pitter: mobile'],
         request_body=PittPostRequest,
-        manual_parameters=APISPEC_DEFAULT_PARAMS,
+        manual_parameters=[AUTH_PARAM],
         responses={
             200: PittPostResponse,
             401: exceptions.ExceptionResponse,
