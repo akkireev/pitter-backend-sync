@@ -26,8 +26,8 @@ class FollowerMobileView(APIView):
             401: exceptions.ExceptionResponse,
             500: exceptions.ExceptionResponse,
         },
-        operation_summary='Удаление учетной записи',
-        operation_description='Удаление учетной записи в сервисе Pitter',
+        operation_summary='Удаление подписки',
+        operation_description='Удаление подписки в сервисе Pitter',
     )
     def delete(cls, request, user_id, following_user_id) -> Dict:
         if user_id != request.api_user.id:
