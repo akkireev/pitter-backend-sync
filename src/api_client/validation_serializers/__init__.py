@@ -6,9 +6,6 @@ from .swagger_params import USERS_URL_FILTER_PARAM
 from .swagger_params import URL_CURSOR_PARAM
 from .swagger_params import PITT_URL_PATH_PARAM
 
-from .pitt_serializers import PittDeleteRequest
-from .pitt_serializers import PittDeleteResponse
-
 from .users_serializers import UsersPostRequest
 from .users_serializers import UsersPostResponse
 from .users_serializers import UsersGetRequest
@@ -32,6 +29,10 @@ from .follower_serializers import FollowerDeleteResponse
 
 from .pitts_serializers import PittsPostRequest
 from .pitts_serializers import PittsPostResponse
+from .pitts_serializers import PittsGetResponse
+
+from .pitt_serializers import PittDeleteRequest
+from .pitt_serializers import PittDeleteResponse
 
 __all__: List[Callable] = [
     # swagger
@@ -64,4 +65,5 @@ __all__: List[Callable] = [
     'FollowerDeleteResponse',
     'PittsPostResponse',
     'PittsPostRequest',
+    'PittsGetResponse',
 ]

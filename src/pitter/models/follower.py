@@ -16,3 +16,11 @@ class Follower(BaseModel):
     @staticmethod
     def unfollow(target: User, follower: User):
         Follower.objects.filter(target=target, follower=follower).delete()
+
+    @staticmethod
+    def get_user_following_list(user_id):
+        return Follower.objects.filter(follower=user_id).all()
+
+    @staticmethod
+    def get_user_followers_list(user_id):
+        return Follower.objects.filter(target=user_id).all()
