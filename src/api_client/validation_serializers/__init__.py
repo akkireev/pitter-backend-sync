@@ -29,6 +29,9 @@ from .followers_serializers import FollowersPostResponse
 from .follower_serializers import FollowerDeleteRequest
 from .follower_serializers import FollowerDeleteResponse
 
+from .pitts_serializers import PittsPostRequest
+from .pitts_serializers import PittsPostResponse
+
 __all__: List[Callable] = [
     # swagger
     'AUTH_PARAM',
@@ -56,4 +59,6 @@ __all__: List[Callable] = [
     'FollowersPostResponse',
     'FollowerDeleteRequest',
     'FollowerDeleteResponse',
+    'PittsPostResponse',
+    'PittsPostRequest',
 ]

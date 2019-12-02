@@ -130,3 +130,29 @@ class ForbiddenError(PitterException):
         self.title = title
         self.payload = payload
         super().__init__(detail, exception_code, self.status_code)
+
+
+class TranscriptionIsEmptyError(PitterException):
+    default_detail = 'Запись не содержит слов'
+
+    def __init__(self, message=None, title=None, payload=None, status_code=None):
+        detail = message if message else self.default_detail
+        exception_code = self.__class__.__name__
+        self.default_detail = message if message else self.default_detail
+        self.status_code = status_code if status_code else 400
+        self.title = title
+        self.payload = payload
+        super().__init__(detail, exception_code, self.status_code)
+
+
+class TranscriptionTooBigError(PitterException):
+    default_detail = 'Запись слишком длинная'
+
+    def __init__(self, message=None, title=None, payload=None, status_code=None):
+        detail = message if message else self.default_detail
+        exception_code = self.__class__.__name__
+        self.default_detail = message if message else self.default_detail
+        self.status_code = status_code if status_code else 400
+        self.title = title
+        self.payload = payload
+        super().__init__(detail, exception_code, self.status_code)

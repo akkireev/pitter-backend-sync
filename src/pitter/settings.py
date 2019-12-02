@@ -23,6 +23,8 @@ REDIS_PORT = os.environ.get('REDIS_PORT', '6379')
 REDIS_DB_NUMBER = os.environ.get('REDIS_DB_NUMBER', 0)
 REDIS_PASSWORD = os.environ.get('REDIS_PASSWORD', '')
 
+SPEECH_TRANSCRIPTION_MAX_LENGTH = os.environ.get('SPEECH_TRANSCRIPTION_MAX_LENGTH', 140)
+
 DEBUG: bool = bool(int(os.getenv('DEBUG', 1)))  # pylint: disable=invalid-envvar-default
 
 ALLOWED_HOSTS: List[str] = ['*']  # On develop only
