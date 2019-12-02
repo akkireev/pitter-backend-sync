@@ -18,9 +18,17 @@ class Follower(BaseModel):
         Follower.objects.filter(target=target, follower=follower).delete()
 
     @staticmethod
-    def get_user_following_list(user_id):
-        return Follower.objects.filter(follower=user_id).all()
+    def get_user_following_list(user):
+        return Follower.objects.filter(follower=user).all()
 
     @staticmethod
-    def get_user_followers(user_id):
-        return Follower.objects.filter(target=user_id).all()
+    def get_user_followers(user):
+        return Follower.objects.filter(target=user).all()
+
+    @staticmethod
+    def get_followers_num(user):
+        return Follower.objects.filter(target=user).count()
+
+    @staticmethod
+    def get_following_num(user):
+        return Follower.objects.filter(follower=user).count()

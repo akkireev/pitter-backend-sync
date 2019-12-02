@@ -17,7 +17,7 @@ class PittMobileView(APIView):
     @request_post_serializer(PittDeleteRequest)
     @response_dict_serializer(PittDeleteResponse)
     @swagger_auto_schema(
-        tags=['Pitter: mobile'],
+        tags=['Pitter: pitts'],
         request_body=PittDeleteRequest,
         manual_parameters=[AUTH_PARAM, USER_URL_PATH_PARAM, PITT_URL_PATH_PARAM],
         responses={

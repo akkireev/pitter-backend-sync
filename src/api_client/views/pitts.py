@@ -56,7 +56,7 @@ class PittsMobileView(APIView):
     @classmethod
     @response_dict_serializer(PittsGetResponse)
     @swagger_auto_schema(
-        tags=['Pitter: mobile'],
+        tags=['Pitter: pitts'],
         manual_parameters=[URL_CURSOR_PARAM, USER_URL_PATH_PARAM],
         responses={
             200: PittsGetResponse,
