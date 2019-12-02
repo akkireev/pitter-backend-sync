@@ -21,6 +21,15 @@ class User(models.Model):
     joined_at = models.DateTimeField(auto_now=True)
     last_action_at = models.DateTimeField(auto_now=True)
 
+    def to_dict(self):
+        return dict(
+            id=self.id,
+            login=self.login,
+            profile_name=self.profile_name,
+            joined_at=self.joined_at,
+            last_action_at=self.last_action_at,
+        )
+
     @staticmethod
     def get(**kwargs):
         return User.objects.get(**kwargs)

@@ -3,6 +3,7 @@ from typing import List, Callable
 from .swagger_params import AUTH_PARAM
 from .swagger_params import USER_URL_PATH_PARAM
 from .swagger_params import USERS_URL_FILTER_PARAM
+from .swagger_params import URL_CURSOR_PARAM
 
 from .pitt_serializers import PittPostRequest
 from .pitt_serializers import PittPostResponse

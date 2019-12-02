@@ -12,3 +12,12 @@ class UsersPostRequest(serializers.Serializer):
 class UsersPostResponse(serializers.Serializer):
     id = serializers.CharField(required=True, max_length=256)
     login = serializers.CharField(required=True, max_length=64)
+
+
+class UsersGetRequest(serializers.Serializer):
+    pass
+
+
+class UsersGetResponse(serializers.Serializer):
+    next = serializers.CharField(required=True, allow_null=True, max_length=256, label='Cursor для следующих объектов')
+    results = serializers.ListField(required=True, label='Текущие пользователи')
