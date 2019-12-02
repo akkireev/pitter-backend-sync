@@ -45,3 +45,7 @@ class Pitt(BaseModel):
     @staticmethod
     def get_users_pitts_queryset(users):
         return Pitt.objects.filter(owner__in=users)
+
+    @staticmethod
+    def get_user_pitts_queryset(user):
+        return Pitt.objects.filter(owner=user)

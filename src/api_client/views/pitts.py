@@ -9,7 +9,7 @@ from pitter import exceptions
 from pitter.decorators import request_post_serializer, response_dict_serializer
 from pitter.exceptions import ForbiddenError, ValidationError
 from pitter.integrations import GoogleSpeechToText
-from pitter.models import Pitt, Follower
+from pitter.models import Pitt, Follower, User
 from pitter.utils.cursor_pagination import CursorPagination
 
 
@@ -74,10 +74,8 @@ class PittsMobileView(APIView):
         :param request:
         :return:
         """
-        followings = Follower.get_user_followers(user_id)
-        user_followings = [following.target for following in followings]
-        user_followings.append(request.api_user)
-        user_pitts_queryset = Pitt.get_users_pitts_queryset(user_followings)
+        user = User.get(id=user_id)
+        user_pitts_queryset = Pitt.get_user_pitts_queryset(user)
 
         paginator = CursorPagination()
         try:
