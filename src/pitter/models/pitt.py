@@ -43,5 +43,5 @@ class Pitt(BaseModel):
         Pitt.objects.filter(id=pitt_id).delete()
 
     @staticmethod
-    def get_users_pitts(users):
-        return Pitt.objects.filter(owner__in=users).all()
+    def get_users_pitts_queryset(users):
+        return Pitt.objects.filter(owner__in=users)

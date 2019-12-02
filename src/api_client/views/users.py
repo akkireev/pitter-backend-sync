@@ -80,14 +80,13 @@ class UsersMobileView(APIView):
         """
         login_filter = request.query_params.get('login', None)
 
-        users = User.objects
+        users_queryset = User.objects
         if login_filter:
-            users = users.filter(login__contains=login_filter)
-        users = users.all()
+            users_queryset = users_queryset.filter(login__contains=login_filter)
 
         paginator = CursorPagination()
         try:
-            current_page_data = paginator.paginate_queryset(users, request, ['-joined_at'])
+            current_page_data = paginator.paginate_queryset(users_queryset, request, ['-joined_at'])
         except ValueError:
             raise ValidationError()
 

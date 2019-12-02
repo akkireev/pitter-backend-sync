@@ -74,9 +74,10 @@ class PittsMobileView(APIView):
         :param request:
         :return:
         """
-        followings = Follower.get_user_following_list(user_id)
+        followings = Follower.get_user_followers(user_id)
         user_followings = [following.target for following in followings]
-        user_pitts_queryset = Pitt.get_users_pitts(user_followings)  # TODO: change that
+        user_followings.append(request.api_user)
+        user_pitts_queryset = Pitt.get_users_pitts_queryset(user_followings)
 
         paginator = CursorPagination()
         try:

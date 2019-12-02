@@ -43,7 +43,10 @@ class LoginMobileView(APIView):
         user = cls.check_user_credentials(login, password)
         token = cls.create_token(user)
 
-        return dict(token=token, )
+        return dict(
+            user_id=user.id,
+            token=token,
+        )
 
     @classmethod
     def check_user_credentials(cls, login, password) -> User:

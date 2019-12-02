@@ -22,5 +22,5 @@ class Follower(BaseModel):
         return Follower.objects.filter(follower=user_id).all()
 
     @staticmethod
-    def get_user_followers_list(user_id):
+    def get_user_followers(user_id):
         return Follower.objects.filter(target=user_id).all()
