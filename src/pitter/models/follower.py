@@ -12,3 +12,7 @@ class Follower(BaseModel):
     @staticmethod
     def follow(target: User, follower: User):
         return Follower.objects.get_or_create(target=target, follower=follower)
+
+    @staticmethod
+    def unfollow(target: User, follower: User):
+        Follower.objects.filter(target=target, follower=follower).delete()

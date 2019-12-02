@@ -29,3 +29,10 @@ USERS_URL_FILTER_PARAM = Parameter(
     required=False,
     type='string',
 )
+
+FOLLOWING_USER_URL_PATH_PARAM = Parameter(
+    name='following_user_id',
+    in_='path',
+    required=True,
+    type='string',
+)

@@ -23,8 +23,11 @@ from .user_serializers import UserPatchResponse
 from .user_serializers import UserDeleteRequest
 from .user_serializers import UserDeleteResponse
 
-from .followers import FollowersPostRequest
-from .followers import FollowersPostResponse
+from .followers_serializers import FollowersPostRequest
+from .followers_serializers import FollowersPostResponse
+
+from .follower_serializers import FollowerDeleteRequest
+from .follower_serializers import FollowerDeleteResponse
 
 __all__: List[Callable] = [
     # swagger
@@ -51,4 +54,6 @@ __all__: List[Callable] = [
     'UsersGetResponse',
     'FollowersPostRequest',
     'FollowersPostResponse',
+    'FollowerDeleteRequest',
+    'FollowerDeleteResponse',
 ]
