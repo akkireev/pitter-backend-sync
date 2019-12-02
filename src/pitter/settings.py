@@ -115,6 +115,7 @@ STATIC_ROOT = '/static'
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': ['rest_framework.permissions.AllowAny'],
     'EXCEPTION_HANDLER': 'pitter.middleware.custom_exception_handler',
+    'PAGE_SIZE': os.environ.get('PAGE_SIZE', 1),
 }
 
 # Swagger
