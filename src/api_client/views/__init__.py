@@ -10,7 +10,6 @@ from .follower import FollowerMobileView
 from .pitts import PittsMobileView
 
 __all__: Sequence[str] = [
-    'PittMobileView',
     'LoginMobileView',
     'LogoutMobileView',
     'UsersMobileView',
@@ -18,4 +17,5 @@ __all__: Sequence[str] = [
     'FollowersMobileView',
     'FollowerMobileView',
     'PittsMobileView',
+    'PittMobileView',
 ]

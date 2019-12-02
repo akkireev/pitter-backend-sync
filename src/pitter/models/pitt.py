@@ -29,3 +29,7 @@ class Pitt(BaseModel):
             raise TranscriptionIsEmptyError()
         if len(speech_transcription) > settings.SPEECH_TRANSCRIPTION_MAX_LENGTH:
             raise TranscriptionTooBigError()
+
+    @staticmethod
+    def delete_pitt(pitt_id):
+        Pitt.objects.filter(id=pitt_id).delete()

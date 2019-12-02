@@ -3,41 +3,39 @@ from typing import Dict
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework.views import APIView
 
-from api_client.validation_serializers import PittPostRequest, AUTH_PARAM
-from api_client.validation_serializers import PittPostResponse
+from api_client.validation_serializers import PittDeleteRequest, AUTH_PARAM, USER_URL_PATH_PARAM, PITT_URL_PATH_PARAM, \
+    PittDeleteResponse
 from pitter import exceptions
 from pitter.decorators import request_post_serializer, response_dict_serializer, access_token_required
-from pitter.integrations import GoogleSpeechToText
+from pitter.exceptions import ForbiddenError, PitterException
+from pitter.models import Pitt
 
 
 class PittMobileView(APIView):
     @classmethod
     @access_token_required
-    @request_post_serializer(PittPostRequest)
-    @response_dict_serializer(PittPostResponse)
+    @request_post_serializer(PittDeleteRequest)
+    @response_dict_serializer(PittDeleteResponse)
     @swagger_auto_schema(
         tags=['Pitter: mobile'],
-        request_body=PittPostRequest,
-        manual_parameters=[AUTH_PARAM],
+        request_body=PittDeleteRequest,
+        manual_parameters=[AUTH_PARAM, USER_URL_PATH_PARAM, PITT_URL_PATH_PARAM],
         responses={
-            200: PittPostResponse,
+            204: PittDeleteResponse,
+            400: exceptions.ExceptionResponse,
             401: exceptions.ExceptionResponse,
-            404: exceptions.ExceptionResponse,
-            415: exceptions.ExceptionResponse,
             500: exceptions.ExceptionResponse,
         },
-        operation_summary='Создание pitta',
-        operation_description='Создание pitta в сервисе Pitter',
+        operation_summary='Удаление pitt',
+        operation_description='Удаление pitt в сервисе Pitter',
     )
-    def post(cls, request) -> Dict[str, str]:
-        """
-        Создание pitt'a клиентом
-        :param request:
-        :return:
-        """
-        transcription: str = GoogleSpeechToText.recognize_speech(
-            storage_file_path=request.data['storage_file_path'],
-            language_code=request.data['language_code'],
-        )
+    def delete(cls, request, user_id, pitt_id) -> Dict:
+        if user_id != request.api_user.id:
+            raise ForbiddenError()
 
-        return dict(transcription=transcription, )
+        try:
+            Pitt.delete_pitt(pitt_id)
+        except Exception as exc:
+            raise PitterException('Что-то пошло не так', 'ServerError') from exc
+
+        return dict()

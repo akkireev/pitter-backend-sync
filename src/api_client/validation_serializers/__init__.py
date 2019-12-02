@@ -4,9 +4,10 @@ from .swagger_params import AUTH_PARAM
 from .swagger_params import USER_URL_PATH_PARAM
 from .swagger_params import USERS_URL_FILTER_PARAM
 from .swagger_params import URL_CURSOR_PARAM
+from .swagger_params import PITT_URL_PATH_PARAM
 
-from .pitt_serializers import PittPostRequest
-from .pitt_serializers import PittPostResponse
+from .pitt_serializers import PittDeleteRequest
+from .pitt_serializers import PittDeleteResponse
 
 from .users_serializers import UsersPostRequest
 from .users_serializers import UsersPostResponse
@@ -38,9 +39,11 @@ __all__: List[Callable] = [
     'USERS_URL_FILTER_PARAM',
     'USER_URL_PATH_PARAM',
     'URL_CURSOR_PARAM',
+    'PITT_URL_PATH_PARAM',
+
     # serializers
-    'PittPostRequest',
-    'PittPostResponse',
+    'PittDeleteRequest',
+    'PittDeleteResponse',
     'UsersPostRequest',
     'UsersPostResponse',
     'AUTH_PARAM',
