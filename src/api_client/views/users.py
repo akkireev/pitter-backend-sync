@@ -4,10 +4,11 @@ from drf_yasg.utils import swagger_auto_schema
 from rest_framework.views import APIView
 
 from api_client.validation_serializers import UsersPostRequest, UsersPostResponse, UsersGetResponse, \
-    URL_CURSOR_PARAM, USERS_URL_FILTER_PARAM, AUTH_PARAM
+    URL_CURSOR_PARAM, USERS_URL_FILTER_PARAM, AUTH_PARAM, UsersGetRequest
 
 from pitter import exceptions
-from pitter.decorators import request_post_serializer, response_dict_serializer, access_token_required
+from pitter.decorators import request_post_serializer, response_dict_serializer, access_token_required, \
+    request_query_serializer
 from pitter.exceptions import AlreadyExistsError, ValidationError
 from pitter.models import User
 from pitter.utils.cursor_pagination import CursorPagination
@@ -58,6 +59,7 @@ class UsersMobileView(APIView):
 
     @classmethod
     @access_token_required
+    @request_query_serializer(UsersGetRequest)
     @response_dict_serializer(UsersGetResponse)
     @swagger_auto_schema(
         tags=['Pitter: userflow'],

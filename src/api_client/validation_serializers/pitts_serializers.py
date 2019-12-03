@@ -16,6 +16,10 @@ class PittsPostResponse(serializers.Serializer):
     transcription = serializers.CharField(required=True, label='Распознанный текст')
 
 
+class PittsGetRequest(serializers.Serializer):
+    cursor = serializers.CharField(required=False, label='Текущий cursor')
+
+
 class PittsGetResponse(serializers.Serializer):
     next = serializers.CharField(required=True, allow_null=True, max_length=256,
                                  label='Cursor для следующих объектов')

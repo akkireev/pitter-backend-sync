@@ -4,10 +4,11 @@ from drf_yasg.utils import swagger_auto_schema
 from rest_framework.views import APIView
 
 from api_client.validation_serializers import FollowersPostResponse, FollowersPostRequest, USER_URL_PATH_PARAM, \
-    AUTH_PARAM, FollowersGetResponse
+    AUTH_PARAM, FollowersGetResponse, FollowersGetRequest
 
 from pitter import exceptions
-from pitter.decorators import request_post_serializer, response_dict_serializer, access_token_required
+from pitter.decorators import request_post_serializer, response_dict_serializer, access_token_required, \
+    request_query_serializer
 from pitter.exceptions import AlreadyExistsError, ForbiddenError, NotFoundError
 from pitter.models import User, Follower
 
@@ -52,6 +53,7 @@ class FollowersMobileView(APIView):
 
     @classmethod
     @access_token_required
+    @request_query_serializer(FollowersGetRequest)
     @response_dict_serializer(FollowersGetResponse)
     @swagger_auto_schema(
         tags=['Pitter: userflow'],

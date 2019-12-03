@@ -4,9 +4,9 @@ from drf_yasg.utils import swagger_auto_schema
 from rest_framework.views import APIView
 
 from api_client.validation_serializers import USER_URL_PATH_PARAM, \
-    FeedsGetResponse, URL_CURSOR_PARAM, AUTH_PARAM
+    FeedsGetResponse, URL_CURSOR_PARAM, AUTH_PARAM, FeedsGetRequest
 from pitter import exceptions
-from pitter.decorators import response_dict_serializer, access_token_required
+from pitter.decorators import response_dict_serializer, access_token_required, request_query_serializer
 from pitter.exceptions import ValidationError
 from pitter.models import Pitt, Follower, User
 from pitter.utils.cursor_pagination import CursorPagination
@@ -15,6 +15,7 @@ from pitter.utils.cursor_pagination import CursorPagination
 class FeedsMobileView(APIView):
     @classmethod
     @access_token_required
+    @request_query_serializer(FeedsGetRequest)
     @response_dict_serializer(FeedsGetResponse)
     @swagger_auto_schema(
         tags=['Pitter: pitts'],

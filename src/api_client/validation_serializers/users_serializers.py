@@ -15,7 +15,8 @@ class UsersPostResponse(serializers.Serializer):
 
 
 class UsersGetRequest(serializers.Serializer):
-    pass
+    cursor = serializers.CharField(required=False, label='Текущий cursor')
+    login = serializers.CharField(required=False, max_length=64, label='Login для поиска в пользователях')
 
 
 class UsersGetResponse(serializers.Serializer):

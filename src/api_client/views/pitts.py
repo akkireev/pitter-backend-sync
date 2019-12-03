@@ -4,9 +4,10 @@ from drf_yasg.utils import swagger_auto_schema
 from rest_framework.views import APIView
 
 from api_client.validation_serializers import PittsPostRequest, PittsPostResponse, AUTH_PARAM, USER_URL_PATH_PARAM, \
-    PittsGetResponse, URL_CURSOR_PARAM
+    PittsGetResponse, URL_CURSOR_PARAM, PittsGetRequest
 from pitter import exceptions
-from pitter.decorators import request_post_serializer, response_dict_serializer, access_token_required
+from pitter.decorators import request_post_serializer, response_dict_serializer, access_token_required, \
+    request_query_serializer
 from pitter.exceptions import ForbiddenError, ValidationError, NotFoundError
 from pitter.integrations import GoogleSpeechToText
 from pitter.models import Pitt, User
@@ -56,6 +57,7 @@ class PittsMobileView(APIView):
 
     @classmethod
     @access_token_required
+    @request_query_serializer(PittsGetRequest)
     @response_dict_serializer(PittsGetResponse)
     @swagger_auto_schema(
         tags=['Pitter: pitts'],

@@ -2,7 +2,7 @@ from rest_framework import serializers
 
 
 class FeedsGetRequest(serializers.Serializer):
-    pass
+    cursor = serializers.CharField(required=False, label='Текущий cursor')
 
 
 class FeedsGetResponse(serializers.Serializer):

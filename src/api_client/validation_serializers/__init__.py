@@ -24,6 +24,7 @@ from .user_serializers import UserGetResponse
 
 from .followers_serializers import FollowersPostRequest
 from .followers_serializers import FollowersPostResponse
+from .followers_serializers import FollowersGetRequest
 from .followers_serializers import FollowersGetResponse
 
 from .follower_serializers import FollowerDeleteRequest
@@ -31,6 +32,7 @@ from .follower_serializers import FollowerDeleteResponse
 
 from .pitts_serializers import PittsPostRequest
 from .pitts_serializers import PittsPostResponse
+from .pitts_serializers import PittsGetRequest
 from .pitts_serializers import PittsGetResponse
 
 from .pitt_serializers import PittDeleteRequest
@@ -68,10 +70,12 @@ __all__: List[Callable] = [
     'FollowersPostRequest',
     'FollowersPostResponse',
     'FollowersGetResponse',
+    'FollowersGetRequest',
     'FollowerDeleteRequest',
     'FollowerDeleteResponse',
     'PittsPostResponse',
     'PittsPostRequest',
+    'PittsGetRequest',
     'PittsGetResponse',
     'FeedsGetRequest',
     'FeedsGetResponse',
