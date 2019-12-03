@@ -1,5 +1,3 @@
-from typing import Dict
-
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework.views import APIView
 
@@ -26,12 +24,13 @@ class FollowersMobileView(APIView):
             200: FollowersPostResponse,
             401: exceptions.ExceptionResponse,
             403: exceptions.ExceptionResponse,
+            422: exceptions.ExceptionResponse,
             500: exceptions.ExceptionResponse,
         },
         operation_summary='Создание подписки',
         operation_description='Создание подписки в сервисе Pitter',
     )
-    def post(cls, request, user_id) -> Dict:
+    def post(cls, request, user_id):
         """
         Создание подписки клиентом
         :param user_id:
@@ -61,13 +60,14 @@ class FollowersMobileView(APIView):
         responses={
             200: FollowersGetResponse,
             401: exceptions.ExceptionResponse,
-            403: exceptions.ExceptionResponse,
+            404: exceptions.ExceptionResponse,
+            422: exceptions.ExceptionResponse,
             500: exceptions.ExceptionResponse,
         },
         operation_summary='Get all followers and following users',
         operation_description='Get all followers and following users from this user_id user',
     )
-    def get(cls, request, user_id) -> Dict:
+    def get(cls, request, user_id):
         """
         Get all followers and following users from this user_id
         @param user_id:

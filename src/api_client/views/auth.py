@@ -1,5 +1,4 @@
 import datetime
-from typing import Dict
 
 from django.conf import settings
 from drf_yasg.utils import swagger_auto_schema
@@ -25,14 +24,13 @@ class LoginMobileView(APIView):
         responses={
             200: LoginPostResponse,
             401: exceptions.ExceptionResponse,
-            404: exceptions.ExceptionResponse,
-            415: exceptions.ExceptionResponse,
+            422: exceptions.ExceptionResponse,
             500: exceptions.ExceptionResponse,
         },
         operation_summary='Simple login',
         operation_description='Simple login by login and password',
     )
-    def post(cls, request) -> Dict[str, str]:
+    def post(cls, request):
         """
         Simple login using login and password
         :param request:
@@ -50,7 +48,7 @@ class LoginMobileView(APIView):
         )
 
     @classmethod
-    def check_user_credentials(cls, login, password) -> User:
+    def check_user_credentials(cls, login, password):
         try:
             user = User.get(login=login)
         except User.DoesNotExist:
@@ -61,7 +59,7 @@ class LoginMobileView(APIView):
         return user
 
     @classmethod
-    def create_token(cls, user: User) -> str:
+    def create_token(cls, user: User):
         timedelta = datetime.timedelta(seconds=settings.JWT_EXPIRATION_SECONDS)
         token = JwtTokenAuth.create_user_token(user, timedelta)
         RedisStorage.delete_token(user.id)
@@ -82,14 +80,13 @@ class LogoutMobileView(APIView):
         responses={
             200: LogoutPostResponse,
             401: exceptions.ExceptionResponse,
-            404: exceptions.ExceptionResponse,
-            415: exceptions.ExceptionResponse,
+            422: exceptions.ExceptionResponse,
             500: exceptions.ExceptionResponse,
         },
         operation_summary='Logout',
         operation_description='Logout and delete user token',
     )
-    def post(cls, request) -> Dict:
+    def post(cls, request):
         """
         Logout and delete user token from whitelist
         :param request:

@@ -1,5 +1,3 @@
-from typing import Dict
-
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework.views import APIView
 
@@ -23,15 +21,14 @@ class UsersMobileView(APIView):
         request_body=UsersPostRequest,
         responses={
             200: UsersPostResponse,
-            400: exceptions.ExceptionResponse,
-            401: exceptions.ExceptionResponse,
             409: exceptions.ExceptionResponse,
+            422: exceptions.ExceptionResponse,
             500: exceptions.ExceptionResponse,
         },
         operation_summary='Create new user',
         operation_description='Create new user and return his id',
     )
-    def post(cls, request) -> Dict:
+    def post(cls, request):
         """
         Create new user entity using login and password
         @param request:
@@ -66,15 +63,14 @@ class UsersMobileView(APIView):
         manual_parameters=[URL_CURSOR_PARAM, USERS_URL_FILTER_PARAM, AUTH_PARAM],
         responses={
             200: UsersGetResponse,
-            400: exceptions.ExceptionResponse,
             401: exceptions.ExceptionResponse,
-            409: exceptions.ExceptionResponse,
+            422: exceptions.ExceptionResponse,
             500: exceptions.ExceptionResponse,
         },
         operation_summary='Get paginated users list',
         operation_description='Get paginated users list with link to request more',
     )
-    def get(cls, request) -> Dict:
+    def get(cls, request):
         """
         Get users list with ability to filter by login using login__contains
         @param request:

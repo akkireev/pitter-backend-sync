@@ -1,5 +1,3 @@
-from typing import Dict
-
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework.views import APIView
 
@@ -7,7 +5,7 @@ from api_client.validation_serializers import PittDeleteRequest, AUTH_PARAM, USE
     PittDeleteResponse
 from pitter import exceptions
 from pitter.decorators import request_post_serializer, response_dict_serializer, access_token_required
-from pitter.exceptions import ForbiddenError, PitterException
+from pitter.exceptions import ForbiddenError
 from pitter.models import Pitt
 
 
@@ -22,14 +20,15 @@ class PittMobileView(APIView):
         manual_parameters=[AUTH_PARAM, USER_URL_PATH_PARAM, PITT_URL_PATH_PARAM],
         responses={
             200: PittDeleteResponse,
-            400: exceptions.ExceptionResponse,
             401: exceptions.ExceptionResponse,
+            403: exceptions.ExceptionResponse,
+            422: exceptions.ExceptionResponse,
             500: exceptions.ExceptionResponse,
         },
         operation_summary='Delete pitt',
         operation_description='Delete pitt from database',
     )
-    def delete(cls, request, user_id, pitt_id) -> Dict:
+    def delete(cls, request, user_id, pitt_id):
         """
         Delete pitt from database
         @param request:
@@ -40,9 +39,6 @@ class PittMobileView(APIView):
         if user_id != request.api_user.id:
             raise ForbiddenError()
 
-        try:
-            Pitt.delete_pitt(pitt_id)
-        except Exception as exc:
-            raise PitterException('Что-то пошло не так', 'ServerError') from exc
+        Pitt.delete_pitt(pitt_id)
 
         return dict()

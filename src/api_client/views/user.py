@@ -1,5 +1,3 @@
-from typing import Dict
-
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework.views import APIView
 
@@ -22,12 +20,13 @@ class UserMobileView(APIView):
             200: UserGetResponse,
             401: exceptions.ExceptionResponse,
             404: exceptions.ExceptionResponse,
+            422: exceptions.ExceptionResponse,
             500: exceptions.ExceptionResponse,
         },
         operation_summary='Get info about user',
         operation_description='Get user info. Returns private values as well if provided token is same as user_id',
     )
-    def get(cls, request, user_id) -> Dict:
+    def get(cls, request, user_id):
         """
         Get user info. Returns email and email_notification_enabled if token valid for user_id. Else returns
         "following" info
@@ -65,14 +64,15 @@ class UserMobileView(APIView):
         manual_parameters=[AUTH_PARAM, USER_URL_PATH_PARAM],
         responses={
             200: UserDeleteResponse,
-            400: exceptions.ExceptionResponse,
             401: exceptions.ExceptionResponse,
+            403: exceptions.ExceptionResponse,
+            422: exceptions.ExceptionResponse,
             500: exceptions.ExceptionResponse,
         },
         operation_summary='Delete user',
         operation_description='Delete user and his pitts using his token',
     )
-    def delete(cls, request, user_id) -> Dict:
+    def delete(cls, request, user_id):
         """
         Delete user and all his pitts
         @param request:
@@ -96,14 +96,14 @@ class UserMobileView(APIView):
         manual_parameters=[AUTH_PARAM, USER_URL_PATH_PARAM],
         responses={
             200: UserPatchResponse,
-            400: exceptions.ExceptionResponse,
-            401: exceptions.ExceptionResponse,
+            403: exceptions.ExceptionResponse,
+            422: exceptions.ExceptionResponse,
             500: exceptions.ExceptionResponse,
         },
         operation_summary='Patch user info',
         operation_description='Patch user info to change email, profile_name etc',
     )
-    def patch(cls, request, user_id) -> Dict:
+    def patch(cls, request, user_id):
         """
         Patch user info
         @param user_id: user's id to patch

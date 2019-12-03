@@ -22,8 +22,10 @@ class FollowerMobileView(APIView):
         manual_parameters=[AUTH_PARAM, USER_URL_PATH_PARAM],
         responses={
             200: FollowerDeleteResponse,
-            400: exceptions.ExceptionResponse,
             401: exceptions.ExceptionResponse,
+            403: exceptions.ExceptionResponse,
+            404: exceptions.ExceptionResponse,
+            422: exceptions.ExceptionResponse,
             500: exceptions.ExceptionResponse,
         },
         operation_summary='Unfollow',
@@ -39,6 +41,7 @@ class FollowerMobileView(APIView):
         """
         if user_id != request.api_user.id:
             raise ForbiddenError()
+
         try:
             target_user_id = User.get(id=following_user_id)
         except User.DoesNotExist:

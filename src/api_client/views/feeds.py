@@ -1,5 +1,3 @@
-from typing import Dict
-
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework.views import APIView
 
@@ -22,15 +20,14 @@ class FeedsMobileView(APIView):
         manual_parameters=[URL_CURSOR_PARAM, USER_URL_PATH_PARAM, AUTH_PARAM],
         responses={
             200: FeedsGetResponse,
-            400: exceptions.ExceptionResponse,
             401: exceptions.ExceptionResponse,
-            409: exceptions.ExceptionResponse,
+            422: exceptions.ExceptionResponse,
             500: exceptions.ExceptionResponse,
         },
         operation_summary='Get paginated pitts feed for user',
         operation_description='Get paginated pitts feed for user with dynamic load ability',
     )
-    def get(cls, request, user_id) -> Dict:
+    def get(cls, request, user_id):
         """
         Get paginated pitts feed for user
         @param request:

@@ -1,5 +1,3 @@
-from typing import Dict
-
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework.views import APIView
 
@@ -25,15 +23,15 @@ class PittsMobileView(APIView):
         manual_parameters=[AUTH_PARAM, USER_URL_PATH_PARAM],
         responses={
             200: PittsPostResponse,
-            400: exceptions.ExceptionResponse,
             401: exceptions.ExceptionResponse,
-            409: exceptions.ExceptionResponse,
+            403: exceptions.ExceptionResponse,
+            422: exceptions.ExceptionResponse,
             500: exceptions.ExceptionResponse,
         },
         operation_summary='Create pitt',
         operation_description='Create pitt using speech_to_text microservice',
     )
-    def post(cls, request, user_id) -> Dict:
+    def post(cls, request, user_id):
         """
         Create pitt
         @param user_id: user's id who creates pitt
@@ -64,15 +62,15 @@ class PittsMobileView(APIView):
         manual_parameters=[URL_CURSOR_PARAM, USER_URL_PATH_PARAM, AUTH_PARAM],
         responses={
             200: PittsGetResponse,
-            400: exceptions.ExceptionResponse,
             401: exceptions.ExceptionResponse,
-            409: exceptions.ExceptionResponse,
+            404: exceptions.ExceptionResponse,
+            422: exceptions.ExceptionResponse,
             500: exceptions.ExceptionResponse,
         },
         operation_summary='Get paginated user pitts',
         operation_description='Get paginated user pitts',
     )
-    def get(cls, request, user_id) -> Dict:
+    def get(cls, request, user_id):
         """
         Get paginated user pitts
         @param request:
