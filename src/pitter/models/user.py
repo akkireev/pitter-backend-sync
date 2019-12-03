@@ -25,7 +25,7 @@ class User(models.Model):
         return dict(
             id=self.id,
             login=self.login,
-            profile_name=self.profile_name,
+            profile_name=self.profile_name if self.profile_name else None,
             joined_at=self.joined_at,
             last_action_at=self.last_action_at,
         )

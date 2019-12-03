@@ -20,7 +20,6 @@ class UserMobileView(APIView):
         manual_parameters=[USER_URL_PATH_PARAM, AUTH_PARAM],
         responses={
             200: UserGetResponse,
-            400: exceptions.ExceptionResponse,
             401: exceptions.ExceptionResponse,
             404: exceptions.ExceptionResponse,
             500: exceptions.ExceptionResponse,
@@ -40,6 +39,13 @@ class UserMobileView(APIView):
         response_dict = user.to_dict()
         response_dict['followers_num'] = followers_num
         response_dict['following_num'] = following_num
+
+        is_my_profile = request.api_user == user
+        response_dict['is_my_profile'] = is_my_profile
+        response_dict['email'] = user.email if is_my_profile and user.email else None
+        response_dict['email_notifications_enabled'] = user.email_notifications_enabled if is_my_profile else None
+        response_dict['following'] = None if is_my_profile else Follower.is_following(request.api_user, user)
+
         return response_dict
 
     @classmethod

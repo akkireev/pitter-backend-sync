@@ -32,3 +32,7 @@ class Follower(BaseModel):
     @staticmethod
     def get_following_num(user):
         return Follower.objects.filter(follower=user).count()
+
+    @staticmethod
+    def is_following(target, follower):
+        return Follower.objects.filter(target=target, follower=follower).exists()

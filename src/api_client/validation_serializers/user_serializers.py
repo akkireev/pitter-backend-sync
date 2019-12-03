@@ -15,7 +15,7 @@ class UserPatchResponse(serializers.Serializer):
     login = serializers.CharField(required=True, max_length=64)
     email = serializers.CharField(required=True, allow_blank=True, max_length=64, label='e-mail')
     email_notifications_enabled = serializers.BooleanField(required=True, label='Включены ли уведомления')
-    profile_name = serializers.CharField(required=True, allow_blank=True, max_length=64, label='Имя профиля')
+    profile_name = serializers.CharField(required=True, allow_null=True, max_length=64, label='Имя профиля')
 
 
 class UserDeleteRequest(serializers.Serializer):
@@ -29,6 +29,11 @@ class UserDeleteResponse(serializers.Serializer):
 class UserGetResponse(serializers.Serializer):
     id = serializers.CharField(required=True, max_length=256)
     login = serializers.CharField(required=True, max_length=64)
-    profile_name = serializers.CharField(required=True, allow_blank=True, max_length=64, label='Имя профиля')
+    profile_name = serializers.CharField(required=True, allow_null=True, max_length=64, label='Имя профиля')
     followers_num = serializers.IntegerField(required=True, label='Кол-во фоловеров')
     following_num = serializers.IntegerField(required=True, label='Кол-во людей, на которых подписан')
+    is_my_profile = serializers.BooleanField(required=True, label='Информация о текущем пользователе или нет')
+    email = serializers.CharField(required=True, allow_null=True, max_length=64, label='e-mail')
+    email_notifications_enabled = serializers.BooleanField(required=True, allow_null=True,
+                                                           label='Включены ли уведомления')
+    following = serializers.BooleanField(required=True, allow_null=True, label='Подписан или нет')
