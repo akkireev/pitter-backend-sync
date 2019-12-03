@@ -7,13 +7,14 @@ from api_client.validation_serializers import FollowersPostResponse, FollowersPo
     AUTH_PARAM
 
 from pitter import exceptions
-from pitter.decorators import request_post_serializer, response_dict_serializer
+from pitter.decorators import request_post_serializer, response_dict_serializer, access_token_required
 from pitter.exceptions import AlreadyExistsError, ForbiddenError
 from pitter.models import User, Follower
 
 
 class FollowersMobileView(APIView):
     @classmethod
+    @access_token_required
     @request_post_serializer(FollowersPostRequest)
     @response_dict_serializer(FollowersPostResponse)
     @swagger_auto_schema(
@@ -22,9 +23,8 @@ class FollowersMobileView(APIView):
         manual_parameters=[USER_URL_PATH_PARAM, AUTH_PARAM],
         responses={
             200: FollowersPostResponse,
-            400: exceptions.ExceptionResponse,
             401: exceptions.ExceptionResponse,
-            409: exceptions.ExceptionResponse,
+            403: exceptions.ExceptionResponse,
             500: exceptions.ExceptionResponse,
         },
         operation_summary='Создание подписки',

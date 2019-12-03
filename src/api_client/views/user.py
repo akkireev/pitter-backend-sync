@@ -7,27 +7,33 @@ from api_client.validation_serializers import UserPatchRequest, UserPatchRespons
     UserDeleteRequest, AUTH_PARAM, USER_URL_PATH_PARAM, UserGetResponse
 from pitter import exceptions
 from pitter.decorators import request_post_serializer, response_dict_serializer, access_token_required
-from pitter.exceptions import ForbiddenError, PitterException
+from pitter.exceptions import ForbiddenError, PitterException, NotFoundError
 from pitter.models import User, Follower
 
 
 class UserMobileView(APIView):
     @classmethod
+    @access_token_required
     @response_dict_serializer(UserGetResponse)
     @swagger_auto_schema(
         tags=['Pitter: userflow'],
-        manual_parameters=[USER_URL_PATH_PARAM],
+        manual_parameters=[USER_URL_PATH_PARAM, AUTH_PARAM],
         responses={
             200: UserGetResponse,
             400: exceptions.ExceptionResponse,
             401: exceptions.ExceptionResponse,
+            404: exceptions.ExceptionResponse,
             500: exceptions.ExceptionResponse,
         },
         operation_summary='Информация о пользователе',
         operation_description='Информация о пользователе в сервисе Pitter',
     )
     def get(cls, request, user_id) -> Dict:
-        user = User.get(id=user_id)
+        try:
+            user = User.get(id=user_id)
+        except User.DoesNotExist:
+            raise NotFoundError()
+
         followers_num = Follower.get_followers_num(user)
         following_num = Follower.get_following_num(user)
 
@@ -57,10 +63,7 @@ class UserMobileView(APIView):
         if user_id != request.api_user.id:
             raise ForbiddenError()
 
-        try:
-            request.api_user.delete()
-        except Exception as exc:
-            raise PitterException('Что-то пошло не так', 'ServerError') from exc
+        request.api_user.delete()
 
         return dict()
 

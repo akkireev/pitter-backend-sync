@@ -6,7 +6,7 @@ from rest_framework.views import APIView
 from api_client.validation_serializers import PittsPostRequest, PittsPostResponse, AUTH_PARAM, USER_URL_PATH_PARAM, \
     PittsGetResponse, URL_CURSOR_PARAM
 from pitter import exceptions
-from pitter.decorators import request_post_serializer, response_dict_serializer
+from pitter.decorators import request_post_serializer, response_dict_serializer, access_token_required
 from pitter.exceptions import ForbiddenError, ValidationError
 from pitter.integrations import GoogleSpeechToText
 from pitter.models import Pitt, User
@@ -15,6 +15,7 @@ from pitter.utils.cursor_pagination import CursorPagination
 
 class PittsMobileView(APIView):
     @classmethod
+    @access_token_required
     @request_post_serializer(PittsPostRequest)
     @response_dict_serializer(PittsPostResponse)
     @swagger_auto_schema(
@@ -54,10 +55,11 @@ class PittsMobileView(APIView):
         return pitt.to_dict()
 
     @classmethod
+    @access_token_required
     @response_dict_serializer(PittsGetResponse)
     @swagger_auto_schema(
         tags=['Pitter: pitts'],
-        manual_parameters=[URL_CURSOR_PARAM, USER_URL_PATH_PARAM],
+        manual_parameters=[URL_CURSOR_PARAM, USER_URL_PATH_PARAM, AUTH_PARAM],
         responses={
             200: PittsGetResponse,
             400: exceptions.ExceptionResponse,
