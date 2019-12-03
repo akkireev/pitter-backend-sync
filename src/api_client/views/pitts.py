@@ -9,7 +9,7 @@ from pitter import exceptions
 from pitter.decorators import request_post_serializer, response_dict_serializer
 from pitter.exceptions import ForbiddenError, ValidationError
 from pitter.integrations import GoogleSpeechToText
-from pitter.models import Pitt, Follower, User
+from pitter.models import Pitt, User
 from pitter.utils.cursor_pagination import CursorPagination
 
 
@@ -18,11 +18,11 @@ class PittsMobileView(APIView):
     @request_post_serializer(PittsPostRequest)
     @response_dict_serializer(PittsPostResponse)
     @swagger_auto_schema(
-        tags=['Pitter: mobile'],
+        tags=['Pitter: pitts'],
         request_body=PittsPostRequest,
         manual_parameters=[AUTH_PARAM, USER_URL_PATH_PARAM],
         responses={
-            201: PittsPostResponse,
+            200: PittsPostResponse,
             400: exceptions.ExceptionResponse,
             401: exceptions.ExceptionResponse,
             409: exceptions.ExceptionResponse,

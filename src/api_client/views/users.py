@@ -18,10 +18,10 @@ class UsersMobileView(APIView):
     @request_post_serializer(UsersPostRequest)
     @response_dict_serializer(UsersPostResponse)
     @swagger_auto_schema(
-        tags=['Pitter: auth'],
+        tags=['Pitter: userflow'],
         request_body=UsersPostRequest,
         responses={
-            201: UsersPostResponse,
+            200: UsersPostResponse,
             400: exceptions.ExceptionResponse,
             401: exceptions.ExceptionResponse,
             409: exceptions.ExceptionResponse,
@@ -60,7 +60,7 @@ class UsersMobileView(APIView):
     @classmethod
     @response_dict_serializer(UsersGetResponse)
     @swagger_auto_schema(
-        tags=['Pitter: mobile'],
+        tags=['Pitter: userflow'],
         manual_parameters=[URL_CURSOR_PARAM, USERS_URL_FILTER_PARAM],
         responses={
             200: UsersGetResponse,

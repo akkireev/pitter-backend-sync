@@ -21,7 +21,7 @@ class PittMobileView(APIView):
         request_body=PittDeleteRequest,
         manual_parameters=[AUTH_PARAM, USER_URL_PATH_PARAM, PITT_URL_PATH_PARAM],
         responses={
-            204: PittDeleteResponse,
+            200: PittDeleteResponse,
             400: exceptions.ExceptionResponse,
             401: exceptions.ExceptionResponse,
             500: exceptions.ExceptionResponse,

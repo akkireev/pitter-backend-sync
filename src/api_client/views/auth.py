@@ -20,7 +20,7 @@ class LoginMobileView(APIView):
     @request_post_serializer(LoginPostRequest)
     @response_dict_serializer(LoginPostResponse)
     @swagger_auto_schema(
-        tags=['Pitter: auth'],
+        tags=['Pitter: userflow'],
         request_body=LoginPostRequest,
         responses={
             200: LoginPostResponse,
@@ -75,11 +75,11 @@ class LogoutMobileView(APIView):
     @request_post_serializer(LogoutPostRequest)
     @response_dict_serializer(LogoutPostResponse)
     @swagger_auto_schema(
-        tags=['Pitter: auth'],
+        tags=['Pitter: userflow'],
         request_body=LogoutPostRequest,
         manual_parameters=[AUTH_PARAM],
         responses={
-            204: LogoutPostResponse,
+            200: LogoutPostResponse,
             401: exceptions.ExceptionResponse,
             404: exceptions.ExceptionResponse,
             415: exceptions.ExceptionResponse,

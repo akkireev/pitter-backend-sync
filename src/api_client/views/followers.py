@@ -21,7 +21,7 @@ class FollowersMobileView(APIView):
         request_body=FollowersPostRequest,
         manual_parameters=[USER_URL_PATH_PARAM, AUTH_PARAM],
         responses={
-            201: FollowersPostResponse,
+            200: FollowersPostResponse,
             400: exceptions.ExceptionResponse,
             401: exceptions.ExceptionResponse,
             409: exceptions.ExceptionResponse,

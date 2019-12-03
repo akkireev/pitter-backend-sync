@@ -15,7 +15,7 @@ class UserMobileView(APIView):
     @classmethod
     @response_dict_serializer(UserGetResponse)
     @swagger_auto_schema(
-        tags=['Pitter: mobile'],
+        tags=['Pitter: userflow'],
         manual_parameters=[USER_URL_PATH_PARAM],
         responses={
             200: UserGetResponse,
@@ -41,7 +41,7 @@ class UserMobileView(APIView):
     @request_post_serializer(UserDeleteRequest)
     @response_dict_serializer(UserDeleteResponse)
     @swagger_auto_schema(
-        tags=['Pitter: mobile'],
+        tags=['Pitter: userflow'],
         request_body=UserDeleteRequest,
         manual_parameters=[AUTH_PARAM, USER_URL_PATH_PARAM],
         responses={
@@ -69,7 +69,7 @@ class UserMobileView(APIView):
     @request_post_serializer(UserPatchRequest)
     @response_dict_serializer(UserPatchResponse)
     @swagger_auto_schema(
-        tags=['Pitter: mobile'],
+        tags=['Pitter: userflow'],
         request_body=UserPatchRequest,
         manual_parameters=[AUTH_PARAM, USER_URL_PATH_PARAM],
         responses={
@@ -117,11 +117,11 @@ class UserMobileView(APIView):
     @request_post_serializer(UserDeleteRequest)
     @response_dict_serializer(UserDeleteResponse)
     @swagger_auto_schema(
-        tags=['Pitter: mobile'],
+        tags=['Pitter: userflow'],
         request_body=UserDeleteRequest,
         manual_parameters=[AUTH_PARAM, USER_URL_PATH_PARAM],
         responses={
-            204: UserDeleteResponse,
+            200: UserDeleteResponse,
             400: exceptions.ExceptionResponse,
             401: exceptions.ExceptionResponse,
             500: exceptions.ExceptionResponse,

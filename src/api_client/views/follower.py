@@ -21,7 +21,7 @@ class FollowerMobileView(APIView):
         request_body=FollowerDeleteRequest,
         manual_parameters=[AUTH_PARAM, USER_URL_PATH_PARAM],
         responses={
-            204: FollowerDeleteResponse,
+            200: FollowerDeleteResponse,
             400: exceptions.ExceptionResponse,
             401: exceptions.ExceptionResponse,
             500: exceptions.ExceptionResponse,
