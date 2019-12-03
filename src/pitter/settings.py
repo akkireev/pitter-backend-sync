@@ -3,8 +3,8 @@ from typing import List
 
 
 def get_key(filename):
-    with open(filename, 'r') as f:
-        return f.read()
+    with open(filename, 'r') as file_with_key:
+        return file_with_key.read()
 
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -24,6 +24,7 @@ REDIS_DB_NUMBER = os.environ.get('REDIS_DB_NUMBER', 0)
 REDIS_PASSWORD = os.environ.get('REDIS_PASSWORD', '')
 
 SPEECH_TRANSCRIPTION_MAX_LENGTH = os.environ.get('SPEECH_TRANSCRIPTION_MAX_LENGTH', 140)
+SPEECH_TO_TEXT_SUPPORTED_LANGUAGES = ['ru', 'en']
 
 DEBUG: bool = bool(int(os.getenv('DEBUG', 1)))  # pylint: disable=invalid-envvar-default
 

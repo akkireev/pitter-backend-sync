@@ -7,7 +7,7 @@ from api_client.validation_serializers import UserPatchRequest, UserPatchRespons
     UserDeleteRequest, AUTH_PARAM, USER_URL_PATH_PARAM, UserGetResponse
 from pitter import exceptions
 from pitter.decorators import request_post_serializer, response_dict_serializer, access_token_required
-from pitter.exceptions import ForbiddenError, PitterException, NotFoundError
+from pitter.exceptions import ForbiddenError, NotFoundError
 from pitter.models import User, Follower
 
 
@@ -24,17 +24,24 @@ class UserMobileView(APIView):
             404: exceptions.ExceptionResponse,
             500: exceptions.ExceptionResponse,
         },
-        operation_summary='Информация о пользователе',
-        operation_description='Информация о пользователе в сервисе Pitter',
+        operation_summary='Get info about user',
+        operation_description='Get user info. Returns private values as well if provided token is same as user_id',
     )
     def get(cls, request, user_id) -> Dict:
+        """
+        Get user info. Returns email and email_notification_enabled if token valid for user_id. Else returns
+        "following" info
+        @param request:
+        @param user_id: user's id to get info from
+        @return:
+        """
         try:
             user = User.get(id=user_id)
         except User.DoesNotExist:
             raise NotFoundError()
 
-        followers_num = Follower.get_followers_num(user)
-        following_num = Follower.get_following_num(user)
+        followers_num = user.followers.count()
+        following_num = user.targets.count()
 
         response_dict = user.to_dict()
         response_dict['followers_num'] = followers_num
@@ -44,7 +51,7 @@ class UserMobileView(APIView):
         response_dict['is_my_profile'] = is_my_profile
         response_dict['email'] = user.email if is_my_profile and user.email else None
         response_dict['email_notifications_enabled'] = user.email_notifications_enabled if is_my_profile else None
-        response_dict['following'] = None if is_my_profile else Follower.is_following(request.api_user, user)
+        response_dict['following'] = None if is_my_profile else Follower.is_following_by(user, request.api_user)
 
         return response_dict
 
@@ -57,15 +64,21 @@ class UserMobileView(APIView):
         request_body=UserDeleteRequest,
         manual_parameters=[AUTH_PARAM, USER_URL_PATH_PARAM],
         responses={
-            204: UserDeleteResponse,
+            200: UserDeleteResponse,
             400: exceptions.ExceptionResponse,
             401: exceptions.ExceptionResponse,
             500: exceptions.ExceptionResponse,
         },
-        operation_summary='Удаление учетной записи',
-        operation_description='Удаление учетной записи в сервисе Pitter',
+        operation_summary='Delete user',
+        operation_description='Delete user and his pitts using his token',
     )
     def delete(cls, request, user_id) -> Dict:
+        """
+        Delete user and all his pitts
+        @param request:
+        @param user_id: user's id to delete
+        @return:
+        """
         if user_id != request.api_user.id:
             raise ForbiddenError()
 
@@ -87,14 +100,15 @@ class UserMobileView(APIView):
             401: exceptions.ExceptionResponse,
             500: exceptions.ExceptionResponse,
         },
-        operation_summary='Обновление информации об учетной записи',
-        operation_description='Обновление информации об учетной записи в сервисе Pitter',
+        operation_summary='Patch user info',
+        operation_description='Patch user info to change email, profile_name etc',
     )
     def patch(cls, request, user_id) -> Dict:
         """
-        :param user_id:
-        :param request:
-        :return:
+        Patch user info
+        @param user_id: user's id to patch
+        @param request:
+        @return:
         """
         if user_id != request.api_user.id:
             raise ForbiddenError()
@@ -120,31 +134,3 @@ class UserMobileView(APIView):
             email_notifications_enabled=request.api_user.email_notifications_enabled,
             profile_name=request.api_user.profile_name,
         )
-
-    @classmethod
-    @access_token_required
-    @request_post_serializer(UserDeleteRequest)
-    @response_dict_serializer(UserDeleteResponse)
-    @swagger_auto_schema(
-        tags=['Pitter: userflow'],
-        request_body=UserDeleteRequest,
-        manual_parameters=[AUTH_PARAM, USER_URL_PATH_PARAM],
-        responses={
-            200: UserDeleteResponse,
-            400: exceptions.ExceptionResponse,
-            401: exceptions.ExceptionResponse,
-            500: exceptions.ExceptionResponse,
-        },
-        operation_summary='Удаление учетной записи',
-        operation_description='Удаление учетной записи в сервисе Pitter',
-    )
-    def delete(cls, request, user_id) -> Dict:
-        if user_id != request.api_user.id:
-            raise ForbiddenError()
-
-        try:
-            request.api_user.delete()
-        except Exception as exc:
-            raise PitterException('Что-то пошло не так', 'ServerError') from exc
-
-        return dict()

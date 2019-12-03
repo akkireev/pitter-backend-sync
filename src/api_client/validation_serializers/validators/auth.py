@@ -1,14 +1,16 @@
 import re
 import ipaddress
 
-from pitter.exceptions import ValidationError
-
 from django.utils.ipv6 import is_valid_ipv6_address
 
+from pitter.exceptions import ValidationError
 
-class FieldRegexValidator:
-    compiled_regex = None
-    message = None
+
+class LoginValidator:  # pylint: disable=too-few-public-methods
+    compiled_regex = re.compile(r'^\w[\w.]+\w\Z')
+    message = 'Enter a valid username. This value may contain only letters, ' \
+              'numbers, and ./_ characters and should start with letter and end ' \
+              'with letter.'
     status_code = 400
     flags = 0
 
@@ -17,13 +19,6 @@ class FieldRegexValidator:
         regex_matches = cls.compiled_regex.search(str(value))
         if not regex_matches:
             raise ValidationError(cls.message, status_code=cls.status_code)
-
-
-class LoginValidator(FieldRegexValidator):
-    compiled_regex = re.compile(r'^\w[\w.]+\w\Z')
-    message = 'Enter a valid username. This value may contain only letters, ' \
-              'numbers, and ./_ characters and should start with letter and end ' \
-              'with letter.'
 
 
 def validate_ipv4_address(value):
@@ -75,8 +70,7 @@ class EmailValidator:
         if not cls.user_regex.match(user_part):
             raise ValidationError(cls.message, status_code=cls.status_code)
 
-        if (domain_part not in cls.domain_whitelist and
-                not cls.validate_domain_part(domain_part)):
+        if (domain_part not in cls.domain_whitelist and not cls.validate_domain_part(domain_part)):
             # Try for possible IDN domain-part
             try:
                 domain_part = domain_part.encode('idna').decode('ascii')

@@ -6,12 +6,6 @@ from pitter.exceptions import exceptions
 
 
 def request_post_serializer(serializer):
-    """
-    Валидация данных запроса
-    :param serializer: serializer instance
-    :return:
-    """
-
     def _decorator(handler):
         @functools.wraps(handler)
         def _wrapper(view, request, *args, **kwargs):
@@ -26,12 +20,6 @@ def request_post_serializer(serializer):
 
 
 def request_query_serializer(serializer):
-    """
-    Валидация данных запроса в query
-    :param serializer: serializer instance
-    :return:
-    """
-
     def _decorator(handler):
         @functools.wraps(handler)
         def _wrapper(view, request, *args, **kwargs):
@@ -46,12 +34,6 @@ def request_query_serializer(serializer):
 
 
 def response_dict_serializer(serializer=None):
-    """
-    Валидация данных ответа
-    :param serializer: serializer instance
-    :return:
-    """
-
     def _decorator(handler):
         @functools.wraps(handler)
         def _wrapper(view, request, *args, **kwargs):
@@ -69,12 +51,6 @@ def response_dict_serializer(serializer=None):
 
 
 def response_list_serializer(serializer=None):
-    """
-    Валидация данных ответа
-    :param serializer: serializer instance
-    :return:
-    """
-
     def _decorator(handler):
         @functools.wraps(handler)
         def _wrapper(view, request, *args, **kwargs):

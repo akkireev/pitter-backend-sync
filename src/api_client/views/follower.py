@@ -17,7 +17,7 @@ class FollowerMobileView(APIView):
     @request_post_serializer(FollowerDeleteRequest)
     @response_dict_serializer(FollowerDeleteResponse)
     @swagger_auto_schema(
-        tags=['Pitter: mobile'],
+        tags=['Pitter: userflow'],
         request_body=FollowerDeleteRequest,
         manual_parameters=[AUTH_PARAM, USER_URL_PATH_PARAM],
         responses={
@@ -26,10 +26,17 @@ class FollowerMobileView(APIView):
             401: exceptions.ExceptionResponse,
             500: exceptions.ExceptionResponse,
         },
-        operation_summary='Удаление подписки',
-        operation_description='Удаление подписки в сервисе Pitter',
+        operation_summary='Unfollow',
+        operation_description='Unfollow user',
     )
     def delete(cls, request, user_id, following_user_id) -> Dict:
+        """
+        Unfollow following user who has following_user_id by user with user_id
+        @param request:
+        @param user_id:
+        @param following_user_id:
+        @return:
+        """
         if user_id != request.api_user.id:
             raise ForbiddenError()
         try:

@@ -6,7 +6,6 @@ import pitter.models.base
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ('pitter', '0001_initial'),
     ]
@@ -22,7 +21,8 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Pitt',
             fields=[
-                ('id', models.CharField(default=pitter.models.base.default_uuid_id, editable=False, max_length=256, primary_key=True, serialize=False)),
+                ('id', models.CharField(default=pitter.models.base.default_uuid_id, editable=False, max_length=256,
+                                        primary_key=True, serialize=False)),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('updated_at', models.DateTimeField(auto_now=True)),
                 ('speech_audio_file', models.FileField(upload_to='')),
@@ -35,8 +35,11 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='User',
             fields=[
-                ('id', models.CharField(default=pitter.models.base.default_uuid_id, editable=False, max_length=256, primary_key=True, serialize=False)),
-                ('login', models.CharField(error_messages={'unique': 'A user with this login already exists.'}, max_length=64, unique=True)),
+                ('id', models.CharField(default=pitter.models.base.default_uuid_id, editable=False, max_length=256,
+                                        primary_key=True, serialize=False)),
+                ('login',
+                 models.CharField(error_messages={'unique': 'A user with this login already exists.'}, max_length=64,
+                                  unique=True)),
                 ('password', models.CharField(max_length=256)),
                 ('profile_name', models.CharField(blank=True, max_length=64)),
                 ('email', models.CharField(blank=True, max_length=128)),
@@ -51,16 +54,19 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='pitt',
             name='owner',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='pitts', to='pitter.User'),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='pitts',
+                                    to='pitter.User'),
         ),
         migrations.AddField(
             model_name='follower',
             name='follower',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='targets', to='pitter.User'),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='targets',
+                                    to='pitter.User'),
         ),
         migrations.AddField(
             model_name='follower',
             name='target',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='followers', to='pitter.User'),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='followers',
+                                    to='pitter.User'),
         ),
     ]

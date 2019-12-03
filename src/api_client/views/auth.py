@@ -29,13 +29,14 @@ class LoginMobileView(APIView):
             415: exceptions.ExceptionResponse,
             500: exceptions.ExceptionResponse,
         },
-        operation_summary='Login в сервисе',
-        operation_description='Login в сервисе Pitter',
+        operation_summary='Simple login',
+        operation_description='Simple login by login and password',
     )
     def post(cls, request) -> Dict[str, str]:
         """
+        Simple login using login and password
         :param request:
-        :return:
+        :return: token and user's id
         """
         login = request.data['login']
         password = request.data['password']
@@ -85,11 +86,12 @@ class LogoutMobileView(APIView):
             415: exceptions.ExceptionResponse,
             500: exceptions.ExceptionResponse,
         },
-        operation_summary='Logout из сервиса',
-        operation_description='Logout из сервиса Pitter',
+        operation_summary='Logout',
+        operation_description='Logout and delete user token',
     )
     def post(cls, request) -> Dict:
         """
+        Logout and delete user token from whitelist
         :param request:
         :return:
         """

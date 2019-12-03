@@ -19,20 +19,12 @@ class Follower(BaseModel):
 
     @staticmethod
     def get_user_following_list(user):
-        return [follow.target for follow in Follower.objects.filter(follower=user).all()]
+        return [follow.target for follow in user.targets.all()]
 
     @staticmethod
     def get_user_followers(user):
-        return [follow.follower for follow in Follower.objects.filter(target=user).all()]
+        return [follow.follower for follow in user.followers.all()]
 
     @staticmethod
-    def get_followers_num(user):
-        return Follower.objects.filter(target=user).count()
-
-    @staticmethod
-    def get_following_num(user):
-        return Follower.objects.filter(follower=user).count()
-
-    @staticmethod
-    def is_following(target, follower):
+    def is_following_by(target, follower):
         return Follower.objects.filter(target=target, follower=follower).exists()

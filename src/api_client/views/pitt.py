@@ -26,10 +26,17 @@ class PittMobileView(APIView):
             401: exceptions.ExceptionResponse,
             500: exceptions.ExceptionResponse,
         },
-        operation_summary='Удаление pitt',
-        operation_description='Удаление pitt в сервисе Pitter',
+        operation_summary='Delete pitt',
+        operation_description='Delete pitt from database',
     )
     def delete(cls, request, user_id, pitt_id) -> Dict:
+        """
+        Delete pitt from database
+        @param request:
+        @param user_id:
+        @param pitt_id:
+        @return:
+        """
         if user_id != request.api_user.id:
             raise ForbiddenError()
 

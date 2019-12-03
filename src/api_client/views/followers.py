@@ -45,10 +45,10 @@ class FollowersMobileView(APIView):
 
         _, created = Follower.follow(target=target_user_id, follower=request.api_user)
 
-        if created:
-            return dict()
-        else:
+        if not created:
             raise AlreadyExistsError()
+
+        return dict()
 
     @classmethod
     @access_token_required
@@ -62,15 +62,15 @@ class FollowersMobileView(APIView):
             403: exceptions.ExceptionResponse,
             500: exceptions.ExceptionResponse,
         },
-        operation_summary='Получение всех подписок пользователя',
-        operation_description='Получение всех подписок пользователя в сервисе Pitter',
+        operation_summary='Get all followers and following users',
+        operation_description='Get all followers and following users from this user_id user',
     )
     def get(cls, request, user_id) -> Dict:
         """
-        Получение подписок пользователя
-        :param user_id:
-        :param request:
-        :return:
+        Get all followers and following users from this user_id
+        @param user_id:
+        @param request:
+        @return:
         """
         try:
             user = User.get(id=user_id)

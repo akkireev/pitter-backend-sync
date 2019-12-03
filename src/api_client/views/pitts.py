@@ -29,15 +29,15 @@ class PittsMobileView(APIView):
             409: exceptions.ExceptionResponse,
             500: exceptions.ExceptionResponse,
         },
-        operation_summary='Создание pitt',
-        operation_description='Создание pitt в сервисе Pitter',
+        operation_summary='Create pitt',
+        operation_description='Create pitt using speech_to_text microservice',
     )
     def post(cls, request, user_id) -> Dict:
         """
-        Создание pitt
-        :param user_id:
-        :param request:
-        :return:
+        Create pitt
+        @param user_id: user's id who creates pitt
+        @param request:
+        @return:
         """
         if user_id != request.api_user.id:
             raise ForbiddenError()
@@ -67,14 +67,15 @@ class PittsMobileView(APIView):
             409: exceptions.ExceptionResponse,
             500: exceptions.ExceptionResponse,
         },
-        operation_summary='Получение списка pittов пользователя',
-        operation_description='Получение списка pittов пользователя в сервисе Pitter',
+        operation_summary='Get paginated user pitts',
+        operation_description='Get paginated user pitts',
     )
     def get(cls, request, user_id) -> Dict:
         """
-        Получение списка pittов пользователя
-        :param request:
-        :return:
+        Get paginated user pitts
+        @param request:
+        @param user_id:
+        @return:
         """
         try:
             user = User.get(id=user_id)
@@ -83,11 +84,10 @@ class PittsMobileView(APIView):
 
         user_pitts_queryset = Pitt.get_user_pitts_queryset(user)
 
-        paginator = CursorPagination()
         try:
-            current_page_data = paginator.paginate_queryset(user_pitts_queryset, request, ['-created_at'])
+            pagination = CursorPagination(user_pitts_queryset, request, ['-created_at'])
         except ValueError:
             raise ValidationError()
 
-        current_page_pitts = [pitt.to_dict() for pitt in current_page_data]
-        return paginator.get_paginated_dict(current_page_pitts)
+        current_page_pitts = [pitt.to_dict() for pitt in pagination.get_current_page()]
+        return pagination.get_paginated_dict(current_page_pitts)

@@ -36,9 +36,6 @@ class User(models.Model):
 
     @classmethod
     def normalize_email(cls, email):
-        """
-        Normalize the email address by lowercasing the domain part of it.
-        """
         email = email or ''
         try:
             email_name, domain_part = email.strip().rsplit('@', 1)

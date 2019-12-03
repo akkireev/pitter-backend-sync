@@ -26,25 +26,25 @@ class FeedsMobileView(APIView):
             409: exceptions.ExceptionResponse,
             500: exceptions.ExceptionResponse,
         },
-        operation_summary='Получение списка pittов для пользователя',
-        operation_description='Получение списка pittов для пользователя в сервисе Pitter',
+        operation_summary='Get paginated pitts feed for user',
+        operation_description='Get paginated pitts feed for user with dynamic load ability',
     )
     def get(cls, request, user_id) -> Dict:
         """
-        Получение pittов для пользователя
-        :param request:
-        :return:
+        Get paginated pitts feed for user
+        @param request:
+        @param user_id:
+        @return:
         """
         user = User.get(id=user_id)
         user_followings = Follower.get_user_following_list(user)
         user_followings.append(user)
         user_pitts_queryset = Pitt.get_users_pitts_queryset(user_followings)
 
-        paginator = CursorPagination()
         try:
-            current_page_data = paginator.paginate_queryset(user_pitts_queryset, request, ['-created_at'])
+            pagination = CursorPagination(user_pitts_queryset, request, ['-created_at'])
         except ValueError:
             raise ValidationError()
 
-        current_page_pitts = [pitt.to_dict() for pitt in current_page_data]
-        return paginator.get_paginated_dict(current_page_pitts)
+        current_page_pitts = [pitt.to_dict() for pitt in pagination.get_current_page()]
+        return pagination.get_paginated_dict(current_page_pitts)

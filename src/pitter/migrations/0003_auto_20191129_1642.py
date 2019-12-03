@@ -5,7 +5,6 @@ import pitter.models.base
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ('pitter', '0002_auto_20191123_1534'),
     ]
@@ -19,6 +18,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='follower',
             name='id',
-            field=models.CharField(default=pitter.models.base.default_uuid_id, editable=False, max_length=256, primary_key=True, serialize=False),
+            field=models.CharField(default=pitter.models.base.default_uuid_id, editable=False, max_length=256,
+                                   primary_key=True, serialize=False),
         ),
     ]

@@ -10,14 +10,15 @@ class BCryptSHA256PasswordHasher:
     def salt(self):
         return bcrypt.gensalt(self.rounds)
 
-    def encode(self, password, salt):
-        password = password.encode('ascii')
-        hashed_password = bcrypt.hashpw(password, salt)
-        return hashed_password.decode('ascii')
-
     def verify(self, password, encoded):
         encoded_2 = self.encode(password, encoded.encode('ascii'))
         return constant_time_compare(encoded, encoded_2)
+
+    @staticmethod
+    def encode(password, salt):
+        password = password.encode('ascii')
+        hashed_password = bcrypt.hashpw(password, salt)
+        return hashed_password.decode('ascii')
 
 
 class PasswordHash:

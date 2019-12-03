@@ -21,10 +21,6 @@ class PitterException(APIException):
 
     @staticmethod
     def get_exception_serializer():
-        """
-
-        :return:
-        """
         return ExceptionResponse
 
 

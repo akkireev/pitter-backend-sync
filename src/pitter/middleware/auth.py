@@ -1,6 +1,6 @@
-from pitter.exceptions import AuthTypeInvalid, AccessTokenInvalid
 from django.utils.deprecation import MiddlewareMixin
 
+from pitter.exceptions import AuthTypeInvalid, AccessTokenInvalid
 from pitter.middleware import custom_middleware_exception
 from pitter.models import User
 from pitter.utils.auth import JwtTokenAuth
@@ -13,7 +13,7 @@ class AuthenticationMiddleware(MiddlewareMixin):
     def process_request(self, request):
         auth = request.headers.get('Authorization', '').split()
         if not auth:
-            return
+            return None
 
         if len(auth) != 2:
             return custom_middleware_exception(AuthTypeInvalid())
@@ -37,11 +37,11 @@ class AuthenticationMiddleware(MiddlewareMixin):
             return custom_middleware_exception(AccessTokenInvalid())
 
         setattr(request, 'api_user', user)
+        return None
 
     def check_token_in_whitelist(self, user_id, token):
         existing_token = self.redis_storage.get_token(user_id)
 
-        # TODO: does better way exist?
         if existing_token is not None:
             return token == existing_token.decode('utf-8')
         return False

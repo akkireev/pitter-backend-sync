@@ -13,6 +13,5 @@ urlpatterns: list = [
          views.FollowerMobileView.as_view(), name='mobile_subscription'),
     path('users/<str:user_id>/pitts', views.PittsMobileView.as_view(), name='mobile_pitts'),
     path('users/<str:user_id>/pitts/<str:pitt_id>', views.PittMobileView.as_view(), name='mobile_pitt'),
-
     path('users/<str:user_id>/feeds', views.FeedsMobileView.as_view(), name='mobile_feeds'),
 ]
