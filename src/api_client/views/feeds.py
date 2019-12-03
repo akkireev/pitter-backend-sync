@@ -36,8 +36,7 @@ class FeedsMobileView(APIView):
         :return:
         """
         user = User.get(id=user_id)
-        followings = Follower.get_user_followers(user)
-        user_followings = [following.target for following in followings]
+        user_followings = Follower.get_user_following_list(user)
         user_followings.append(user)
         user_pitts_queryset = Pitt.get_users_pitts_queryset(user_followings)
 

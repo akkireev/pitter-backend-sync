@@ -7,7 +7,7 @@ from api_client.validation_serializers import AUTH_PARAM, USER_URL_PATH_PARAM, F
     FollowerDeleteResponse
 from pitter import exceptions
 from pitter.decorators import request_post_serializer, response_dict_serializer, access_token_required
-from pitter.exceptions import ForbiddenError, PitterException
+from pitter.exceptions import ForbiddenError, NotFoundError
 from pitter.models import Follower, User
 
 
@@ -32,12 +32,11 @@ class FollowerMobileView(APIView):
     def delete(cls, request, user_id, following_user_id) -> Dict:
         if user_id != request.api_user.id:
             raise ForbiddenError()
-
-        target_user_id = User.get(id=following_user_id)
-
         try:
-            Follower.unfollow(target=target_user_id, follower=request.api_user)
-        except Exception as exc:
-            raise PitterException('Что-то пошло не так', 'ServerError') from exc
+            target_user_id = User.get(id=following_user_id)
+        except User.DoesNotExist:
+            raise NotFoundError()
+
+        Follower.unfollow(target=target_user_id, follower=request.api_user)
 
         return dict()

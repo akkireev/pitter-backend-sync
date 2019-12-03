@@ -4,11 +4,11 @@ from drf_yasg.utils import swagger_auto_schema
 from rest_framework.views import APIView
 
 from api_client.validation_serializers import FollowersPostResponse, FollowersPostRequest, USER_URL_PATH_PARAM, \
-    AUTH_PARAM
+    AUTH_PARAM, FollowersGetResponse
 
 from pitter import exceptions
 from pitter.decorators import request_post_serializer, response_dict_serializer, access_token_required
-from pitter.exceptions import AlreadyExistsError, ForbiddenError
+from pitter.exceptions import AlreadyExistsError, ForbiddenError, NotFoundError
 from pitter.models import User, Follower
 
 
@@ -18,7 +18,7 @@ class FollowersMobileView(APIView):
     @request_post_serializer(FollowersPostRequest)
     @response_dict_serializer(FollowersPostResponse)
     @swagger_auto_schema(
-        tags=['Pitter: mobile'],
+        tags=['Pitter: userflow'],
         request_body=FollowersPostRequest,
         manual_parameters=[USER_URL_PATH_PARAM, AUTH_PARAM],
         responses={
@@ -49,3 +49,39 @@ class FollowersMobileView(APIView):
             return dict()
         else:
             raise AlreadyExistsError()
+
+    @classmethod
+    @access_token_required
+    @response_dict_serializer(FollowersGetResponse)
+    @swagger_auto_schema(
+        tags=['Pitter: userflow'],
+        manual_parameters=[USER_URL_PATH_PARAM, AUTH_PARAM],
+        responses={
+            200: FollowersGetResponse,
+            401: exceptions.ExceptionResponse,
+            403: exceptions.ExceptionResponse,
+            500: exceptions.ExceptionResponse,
+        },
+        operation_summary='Получение всех подписок пользователя',
+        operation_description='Получение всех подписок пользователя в сервисе Pitter',
+    )
+    def get(cls, request, user_id) -> Dict:
+        """
+        Получение подписок пользователя
+        :param user_id:
+        :param request:
+        :return:
+        """
+        try:
+            user = User.get(id=user_id)
+        except User.DoesNotExist:
+            raise NotFoundError()
+
+        followers = Follower.get_user_followers(user)
+        followings = Follower.get_user_following_list(user)
+
+        return dict(
+            user_id=user.id,
+            followers=[follower.to_dict() for follower in followers],
+            following=[following.to_dict() for following in followings],
+        )

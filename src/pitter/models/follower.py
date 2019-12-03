@@ -19,11 +19,11 @@ class Follower(BaseModel):
 
     @staticmethod
     def get_user_following_list(user):
-        return Follower.objects.filter(follower=user).all()
+        return [follow.target for follow in Follower.objects.filter(follower=user).all()]
 
     @staticmethod
     def get_user_followers(user):
-        return Follower.objects.filter(target=user).all()
+        return [follow.follower for follow in Follower.objects.filter(target=user).all()]
 
     @staticmethod
     def get_followers_num(user):

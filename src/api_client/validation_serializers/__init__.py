@@ -24,6 +24,7 @@ from .user_serializers import UserGetResponse
 
 from .followers_serializers import FollowersPostRequest
 from .followers_serializers import FollowersPostResponse
+from .followers_serializers import FollowersGetResponse
 
 from .follower_serializers import FollowerDeleteRequest
 from .follower_serializers import FollowerDeleteResponse
@@ -66,6 +67,7 @@ __all__: List[Callable] = [
     'UsersGetResponse',
     'FollowersPostRequest',
     'FollowersPostResponse',
+    'FollowersGetResponse',
     'FollowerDeleteRequest',
     'FollowerDeleteResponse',
     'PittsPostResponse',

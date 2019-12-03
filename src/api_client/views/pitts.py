@@ -7,7 +7,7 @@ from api_client.validation_serializers import PittsPostRequest, PittsPostRespons
     PittsGetResponse, URL_CURSOR_PARAM
 from pitter import exceptions
 from pitter.decorators import request_post_serializer, response_dict_serializer, access_token_required
-from pitter.exceptions import ForbiddenError, ValidationError
+from pitter.exceptions import ForbiddenError, ValidationError, NotFoundError
 from pitter.integrations import GoogleSpeechToText
 from pitter.models import Pitt, User
 from pitter.utils.cursor_pagination import CursorPagination
@@ -76,7 +76,11 @@ class PittsMobileView(APIView):
         :param request:
         :return:
         """
-        user = User.get(id=user_id)
+        try:
+            user = User.get(id=user_id)
+        except User.DoesNotExist:
+            raise NotFoundError()
+
         user_pitts_queryset = Pitt.get_user_pitts_queryset(user)
 
         paginator = CursorPagination()

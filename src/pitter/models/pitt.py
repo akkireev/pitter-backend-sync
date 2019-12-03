@@ -19,6 +19,7 @@ class Pitt(BaseModel):
             owner_id=self.owner.id,
             storage_file_path=self.speech_audio_file_path,
             transcription=self.speech_transcription,
+            created_at=self.created_at,
         )
 
     @staticmethod
