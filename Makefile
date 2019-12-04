@@ -6,9 +6,9 @@ down:
 	docker-compose down
 
 lint:
-	pip install -r requirements/dev-requirements.txt
+#	pip install -r requirements/dev-requirements.txt
 	flake8 src
-	pylint src
+	pylint --disable C0116 --init-hook 'import sys; sys.path.append("./src")' --load-plugins pylint_django src
 	mypy src
 
 format:

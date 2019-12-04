@@ -1,7 +1,7 @@
 import datetime
+from typing import Optional
 
 import jwt
-from typing import Optional
 
 from django.conf import settings
 
@@ -12,12 +12,6 @@ from pitter.models import User
 class JwtTokenAuth:
     @classmethod
     def check_token(cls, auth_type: str, token: str) -> Optional[dict]:
-        """
-        Проверяет JWT токен: валидный ли он
-        :param auth_type:
-        :param token:
-        :return:
-        """
         if auth_type != 'Bearer':
             raise AccessTokenInvalid()
 

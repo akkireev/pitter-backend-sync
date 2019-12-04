@@ -36,3 +36,10 @@ FOLLOWING_USER_URL_PATH_PARAM = Parameter(
     required=True,
     type='string',
 )
+
+PITT_URL_PATH_PARAM = Parameter(
+    name='pitt_id',
+    in_='path',
+    required=True,
+    type='string',
+)

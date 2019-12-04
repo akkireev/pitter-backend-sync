@@ -3,8 +3,8 @@ from typing import List
 
 
 def get_key(filename):
-    with open(filename, 'r') as f:
-        return f.read()
+    with open(filename, 'r') as file_with_key:
+        return file_with_key.read()
 
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -22,6 +22,14 @@ REDIS_HOST = os.environ.get('REDIS_HOST', 'localhost')
 REDIS_PORT = os.environ.get('REDIS_PORT', '6379')
 REDIS_DB_NUMBER = os.environ.get('REDIS_DB_NUMBER', 0)
 REDIS_PASSWORD = os.environ.get('REDIS_PASSWORD', '')
+
+SPEECH_TRANSCRIPTION_MAX_LENGTH = os.environ.get('SPEECH_TRANSCRIPTION_MAX_LENGTH', 140)
+SPEECH_TO_TEXT_SUPPORTED_LANGUAGES = ['ru', 'en']
+
+SMTP_HOST_IP = os.environ.get('SMTP_HOST_IP', 'smtp.mail.ru')
+SMTP_HOST_PORT = int(os.environ.get('SMTP_HOST_PORT', 465))
+SMTP_SENDER_ADDRESS = os.environ['SMTP_SENDER_ADDRESS']
+SMTP_SENDER_PASSWORD = os.environ['SMTP_SENDER_PASSWORD']
 
 DEBUG: bool = bool(int(os.getenv('DEBUG', 1)))  # pylint: disable=invalid-envvar-default
 

@@ -9,12 +9,12 @@ from rest_framework.utils.urls import replace_query_param
 Cursor = namedtuple('Cursor', ['offset', 'position'])
 
 
-class CursorPagination:
+class CursorPagination:  # pylint: disable=too-many-instance-attributes
     cursor_query_param = 'cursor'
     page_size = api_settings.PAGE_SIZE
     offset_cutoff = 1000
 
-    def paginate_queryset(self, queryset, request, ordering_fields: list):
+    def __init__(self, queryset, request, ordering_fields: list):
         self.base_url = request.build_absolute_uri()
         self.ordering = ordering_fields
 
@@ -54,6 +54,7 @@ class CursorPagination:
         if self.has_previous:
             self.previous_position = current_position
 
+    def get_current_page(self):
         return self.page
 
     def get_next_link(self):
@@ -116,16 +117,17 @@ class CursorPagination:
         encoded = b64encode(querystring.encode('ascii')).decode('ascii')
         return replace_query_param(self.base_url, self.cursor_query_param, encoded)
 
-    def _get_position_from_instance(self, instance, ordering):
+    def get_paginated_dict(self, data):
+        return OrderedDict([
+            ('next', self.get_next_link()),
+            ('results', data)
+        ])
+
+    @staticmethod
+    def _get_position_from_instance(instance, ordering):
         field_name = ordering[0].lstrip('-')
         if isinstance(instance, dict):
             attr = instance[field_name]
         else:
             attr = getattr(instance, field_name)
         return str(attr)
-
-    def get_paginated_dict(self, data):
-        return OrderedDict([
-            ('next', self.get_next_link()),
-            ('results', data)
-        ])

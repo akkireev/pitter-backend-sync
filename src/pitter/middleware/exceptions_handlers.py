@@ -12,10 +12,6 @@ LOGGER = logging.getLogger(__name__)
 
 
 class ErrorHandlerMiddleware:
-    """
-    Class docstring
-    """
-
     def __init__(self, get_response):
         self.get_response = get_response
 
@@ -24,11 +20,6 @@ class ErrorHandlerMiddleware:
         return response
 
     def process_exception(self, request, exception) -> Optional[JsonResponse]:  # pylint: disable=no-self-use
-        """
-
-        :param exception:
-        :return:
-        """
         if not isinstance(exception, exceptions.PitterException):
             LOGGER.exception(traceback.format_exc())
             return JsonResponse(
@@ -40,6 +31,8 @@ class ErrorHandlerMiddleware:
                 ),
                 status=500,
             )
+
+        return None
 
 
 def custom_middleware_exception(exception):
@@ -58,12 +51,6 @@ def custom_middleware_exception(exception):
 
 
 def custom_exception_handler(exception, context):
-    """
-
-    :param exception:
-    :param context:
-    :return:
-    """
     response = exception_handler(exception, context)
 
     if settings.DEBUG:

@@ -7,6 +7,7 @@ class LoginPostRequest(serializers.Serializer):
 
 
 class LoginPostResponse(serializers.Serializer):
+    user_id = serializers.CharField(required=True, max_length=256, label='ID пользователя')
     token = serializers.CharField(required=True, label='JWT токен')
 
 

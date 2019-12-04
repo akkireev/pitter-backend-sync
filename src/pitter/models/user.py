@@ -25,7 +25,7 @@ class User(models.Model):
         return dict(
             id=self.id,
             login=self.login,
-            profile_name=self.profile_name,
+            profile_name=self.profile_name if self.profile_name else None,
             joined_at=self.joined_at,
             last_action_at=self.last_action_at,
         )
@@ -36,9 +36,6 @@ class User(models.Model):
 
     @classmethod
     def normalize_email(cls, email):
-        """
-        Normalize the email address by lowercasing the domain part of it.
-        """
         email = email or ''
         try:
             email_name, domain_part = email.strip().rsplit('@', 1)

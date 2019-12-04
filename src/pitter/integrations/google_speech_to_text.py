@@ -5,7 +5,7 @@ from pitter import exceptions
 
 
 class GoogleSpeechToText:
-    SUPPORTED_LANGUAGES = ['ru', 'en']
+    supported_languages = settings.SPEECH_TO_TEXT_SUPPORTED_LANGUAGES
 
     @staticmethod
     def recognize_speech(storage_file_path: str, language_code: str = "ru") -> str:
@@ -18,7 +18,11 @@ class GoogleSpeechToText:
         except Exception as exc:
             raise exceptions.GoogleSpeechToTextError() from exc
 
-        if response.status_code == 200:
-            return response.json()['speech_transcription']
-        else:
+        if response.status_code != 200:
             raise exceptions.GoogleSpeechToTextError()
+
+        return response.json()['speech_transcription']
+
+    @classmethod
+    def get_supported_languages(cls):
+        return cls.supported_languages

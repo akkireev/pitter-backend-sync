@@ -2,7 +2,8 @@ from typing import Sequence
 
 from .exceptions import ExceptionResponse, PitterException, ValidationError, \
     InternalRequestError, GoogleSpeechToTextError, AlreadyExistsError, AccessTokenInvalid, \
-    AuthTypeInvalid, InvalidCredentialsError, ForbiddenError
+    AuthTypeInvalid, InvalidCredentialsError, ForbiddenError, TranscriptionIsEmptyError, \
+    TranscriptionTooBigError, NotFoundError
 
 __all__: Sequence[str] = [
     'ExceptionResponse',
@@ -15,4 +16,7 @@ __all__: Sequence[str] = [
     'AuthTypeInvalid',
     'InvalidCredentialsError',
     'ForbiddenError',
+    'TranscriptionIsEmptyError',
+    'TranscriptionTooBigError',
+    'NotFoundError',
 ]

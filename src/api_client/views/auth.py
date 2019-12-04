@@ -1,5 +1,4 @@
 import datetime
-from typing import Dict
 
 from django.conf import settings
 from drf_yasg.utils import swagger_auto_schema
@@ -20,22 +19,22 @@ class LoginMobileView(APIView):
     @request_post_serializer(LoginPostRequest)
     @response_dict_serializer(LoginPostResponse)
     @swagger_auto_schema(
-        tags=['Pitter: auth'],
+        tags=['Pitter: userflow'],
         request_body=LoginPostRequest,
         responses={
             200: LoginPostResponse,
             401: exceptions.ExceptionResponse,
-            404: exceptions.ExceptionResponse,
-            415: exceptions.ExceptionResponse,
+            422: exceptions.ExceptionResponse,
             500: exceptions.ExceptionResponse,
         },
-        operation_summary='Login в сервисе',
-        operation_description='Login в сервисе Pitter',
+        operation_summary='Simple login',
+        operation_description='Simple login by login and password',
     )
-    def post(cls, request) -> Dict[str, str]:
+    def post(cls, request):
         """
+        Simple login using login and password
         :param request:
-        :return:
+        :return: token and user's id
         """
         login = request.data['login']
         password = request.data['password']
@@ -43,10 +42,13 @@ class LoginMobileView(APIView):
         user = cls.check_user_credentials(login, password)
         token = cls.create_token(user)
 
-        return dict(token=token, )
+        return dict(
+            user_id=user.id,
+            token=token,
+        )
 
     @classmethod
-    def check_user_credentials(cls, login, password) -> User:
+    def check_user_credentials(cls, login, password):
         try:
             user = User.get(login=login)
         except User.DoesNotExist:
@@ -57,7 +59,7 @@ class LoginMobileView(APIView):
         return user
 
     @classmethod
-    def create_token(cls, user: User) -> str:
+    def create_token(cls, user: User):
         timedelta = datetime.timedelta(seconds=settings.JWT_EXPIRATION_SECONDS)
         token = JwtTokenAuth.create_user_token(user, timedelta)
         RedisStorage.delete_token(user.id)
@@ -72,21 +74,21 @@ class LogoutMobileView(APIView):
     @request_post_serializer(LogoutPostRequest)
     @response_dict_serializer(LogoutPostResponse)
     @swagger_auto_schema(
-        tags=['Pitter: auth'],
+        tags=['Pitter: userflow'],
         request_body=LogoutPostRequest,
         manual_parameters=[AUTH_PARAM],
         responses={
-            204: LogoutPostResponse,
+            200: LogoutPostResponse,
             401: exceptions.ExceptionResponse,
-            404: exceptions.ExceptionResponse,
-            415: exceptions.ExceptionResponse,
+            422: exceptions.ExceptionResponse,
             500: exceptions.ExceptionResponse,
         },
-        operation_summary='Logout из сервиса',
-        operation_description='Logout из сервиса Pitter',
+        operation_summary='Logout',
+        operation_description='Logout and delete user token',
     )
-    def post(cls, request) -> Dict:
+    def post(cls, request):
         """
+        Logout and delete user token from whitelist
         :param request:
         :return:
         """
