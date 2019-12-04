@@ -26,6 +26,11 @@ REDIS_PASSWORD = os.environ.get('REDIS_PASSWORD', '')
 SPEECH_TRANSCRIPTION_MAX_LENGTH = os.environ.get('SPEECH_TRANSCRIPTION_MAX_LENGTH', 140)
 SPEECH_TO_TEXT_SUPPORTED_LANGUAGES = ['ru', 'en']
 
+SMTP_HOST_IP = os.environ.get('SMTP_HOST_IP', 'smtp.mail.ru')
+SMTP_HOST_PORT = int(os.environ.get('SMTP_HOST_PORT', 465))
+SMTP_SENDER_ADDRESS = os.environ['SMTP_SENDER_ADDRESS']
+SMTP_SENDER_PASSWORD = os.environ['SMTP_SENDER_PASSWORD']
+
 DEBUG: bool = bool(int(os.getenv('DEBUG', 1)))  # pylint: disable=invalid-envvar-default
 
 ALLOWED_HOSTS: List[str] = ['*']  # On develop only

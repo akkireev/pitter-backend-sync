@@ -9,6 +9,7 @@ from pitter.decorators import request_post_serializer, response_dict_serializer,
     request_query_serializer
 from pitter.exceptions import AlreadyExistsError, ForbiddenError, NotFoundError
 from pitter.models import User, Follower
+from pitter.utils.smtp_client import SmtpClient
 
 
 class FollowersMobileView(APIView):
@@ -40,15 +41,24 @@ class FollowersMobileView(APIView):
         if user_id != request.api_user.id:
             raise ForbiddenError()
 
-        following_user_id = request.data['following_user_id']
-        target_user_id = User.get(id=following_user_id)
+        target_user_id = request.data['following_user_id']
+        if user_id == target_user_id:
+            raise NotFoundError()
 
-        _, created = Follower.follow(target=target_user_id, follower=request.api_user)
+        target_user = User.get(id=target_user_id)
+
+        _, created = Follower.follow(target=target_user, follower=request.api_user)
 
         if not created:
             raise AlreadyExistsError()
-
+        if target_user.email_notifications_enabled:
+            cls.notify_target_user(request.api_user, target_user)
         return dict()
+
+    @classmethod
+    def notify_target_user(cls, follower, target):
+        msg = f"{follower.login} is now following you!"
+        SmtpClient.send_mail(target.email, msg)
 
     @classmethod
     @access_token_required

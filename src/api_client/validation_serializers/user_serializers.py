@@ -15,7 +15,7 @@ class UserPatchResponse(serializers.Serializer):
     login = serializers.CharField(required=True, max_length=64)
     email = serializers.CharField(required=True, allow_blank=True, max_length=64, label='e-mail')
     email_notifications_enabled = serializers.BooleanField(required=True, label='Включены ли уведомления')
-    profile_name = serializers.CharField(required=True, allow_null=True, max_length=64, label='Имя профиля')
+    profile_name = serializers.CharField(required=True, allow_blank=True, max_length=64, label='Имя профиля')
 
 
 class UserDeleteRequest(serializers.Serializer):
