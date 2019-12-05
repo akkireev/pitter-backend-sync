@@ -11,7 +11,7 @@ class ExceptionResponse(serializers.Serializer):
 
 
 class PitterException(APIException):
-    default_detail = 'Что-то пошло не так'
+    default_detail = 'Something goes wrong'
     default_code = 'ServerError'
 
     def __init__(self, message, error_code, status_code=500):
@@ -25,7 +25,7 @@ class PitterException(APIException):
 
 
 class ValidationError(PitterException):
-    default_detail = 'Ошибка валидации'
+    default_detail = 'Validation error'
 
     def __init__(self, message=None, title=None, payload=None, status_code=None):
         detail = message if message else self.default_detail
@@ -38,7 +38,7 @@ class ValidationError(PitterException):
 
 
 class InternalRequestError(PitterException):
-    default_detail = 'Некоторые внутренние запросы вернули ошибку'
+    default_detail = 'Internal requests returned an error'
 
     def __init__(self, message=None, title=None, payload=None, status_code=None):
         detail = message if message else self.default_detail
@@ -51,7 +51,7 @@ class InternalRequestError(PitterException):
 
 
 class GoogleSpeechToTextError(PitterException):
-    default_detail = 'Сервис GoogleSpeechToText недоступен'
+    default_detail = 'Service GoogleSpeechToText unavailable'
 
     def __init__(self, message=None, title=None, payload=None, status_code=None):
         detail = message if message else self.default_detail
@@ -64,7 +64,7 @@ class GoogleSpeechToTextError(PitterException):
 
 
 class AlreadyExistsError(PitterException):
-    default_detail = 'Данные уже существуют'
+    default_detail = 'Data already exists'
 
     def __init__(self, message=None, title=None, payload=None, status_code=None):
         detail = message if message else self.default_detail
@@ -77,7 +77,7 @@ class AlreadyExistsError(PitterException):
 
 
 class AccessTokenInvalid(PitterException):
-    default_detail = 'Неверный токен'
+    default_detail = 'Invalid token'
 
     def __init__(self, message=None, title=None, payload=None, status_code=None):
         detail = message if message else self.default_detail
@@ -90,7 +90,7 @@ class AccessTokenInvalid(PitterException):
 
 
 class AuthTypeInvalid(PitterException):
-    default_detail = 'Неверный тип авторизации'
+    default_detail = 'Invalid authorization type'
 
     def __init__(self, message=None, title=None, payload=None, status_code=None):
         detail = message if message else self.default_detail
@@ -103,7 +103,7 @@ class AuthTypeInvalid(PitterException):
 
 
 class InvalidCredentialsError(PitterException):
-    default_detail = 'Неверное имя пользователя или пароль'
+    default_detail = 'Invalid username or password'
 
     def __init__(self, message=None, title=None, payload=None, status_code=None):
         detail = message if message else self.default_detail
@@ -116,7 +116,7 @@ class InvalidCredentialsError(PitterException):
 
 
 class ForbiddenError(PitterException):
-    default_detail = 'Доступ запрещен'
+    default_detail = 'Access denied'
 
     def __init__(self, message=None, title=None, payload=None, status_code=None):
         detail = message if message else self.default_detail
@@ -129,7 +129,7 @@ class ForbiddenError(PitterException):
 
 
 class TranscriptionIsEmptyError(PitterException):
-    default_detail = 'Запись не содержит слов'
+    default_detail = 'Transcription is empty'
 
     def __init__(self, message=None, title=None, payload=None, status_code=None):
         detail = message if message else self.default_detail
@@ -142,7 +142,7 @@ class TranscriptionIsEmptyError(PitterException):
 
 
 class TranscriptionTooBigError(PitterException):
-    default_detail = 'Запись слишком длинная'
+    default_detail = 'Transcription is too long'
 
     def __init__(self, message=None, title=None, payload=None, status_code=None):
         detail = message if message else self.default_detail
@@ -155,7 +155,7 @@ class TranscriptionTooBigError(PitterException):
 
 
 class NotFoundError(PitterException):
-    default_detail = 'По данному запросу ничего не найдено'
+    default_detail = 'Not found'
 
     def __init__(self, message=None, title=None, payload=None, status_code=None):
         detail = message if message else self.default_detail
