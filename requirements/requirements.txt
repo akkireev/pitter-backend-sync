@@ -5,6 +5,6 @@ PyYAML==5.1.2
 psycopg2-binary==2.8.4
 bcrypt==3.1.7
 PyJWT==1.7.1
-cryptography==2.8
+cryptography==3.2
 redis==3.3.11
 pylint-django==2.0.13
